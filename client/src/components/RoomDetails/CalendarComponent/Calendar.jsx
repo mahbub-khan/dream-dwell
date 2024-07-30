@@ -1,7 +1,7 @@
-import { Calendar } from "react-date-range";
+import { DateRange } from "react-date-range";
 
 const CalendarComponent = () => {
-  return <Calendar />;
+  return <DateRange rangeColors={["#f43f5e"]} />;
 };
 
 export default CalendarComponent;
