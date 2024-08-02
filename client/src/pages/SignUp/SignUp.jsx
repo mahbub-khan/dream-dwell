@@ -13,8 +13,20 @@ const SignUp = () => {
     const email = form.email.value;
     const password = form.password.value;
     const image = form.image.files[0];
-    const imageData = await imageUpload(image);
-    console.log(imageData);
+
+    try {
+      //1. upload image
+      const imageData = await imageUpload(image);
+      //2. User registration
+      const result = await createUser(email, password);
+      //3. save username and profile photo
+      await updateUserProfile(name, imageData?.data?.display_url);
+      console.log(result);
+      //4. save user data in database
+      //result.user.email
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
