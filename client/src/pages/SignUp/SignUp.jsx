@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { imageUpload } from "../../api/utils";
 import useAuth from "../../hooks/useAuth";
+import { saveUser } from "../../api/auth";
 
 const SignUp = () => {
   const { createUser, updateUserProfile, signInWithGoogle } = useAuth();
@@ -17,12 +18,17 @@ const SignUp = () => {
     try {
       //1. upload image
       const imageData = await imageUpload(image);
+
       //2. User registration
       const result = await createUser(email, password);
+
       //3. save username and profile photo
       await updateUserProfile(name, imageData?.data?.display_url);
       console.log(result);
+
       //4. save user data in database
+      const dbResponse = await saveUser(result?.user);
+      console.log(dbResponse);
       //result.user.email
     } catch (err) {
       console.log(err);
