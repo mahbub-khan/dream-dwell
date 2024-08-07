@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
@@ -8,6 +8,8 @@ import { ImSpinner9 } from "react-icons/im";
 const Login = () => {
   const { signIn, signInWithGoogle, loading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state?.from?.pathname || "/";
   //form submit handler
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -23,7 +25,7 @@ const Login = () => {
       await getToken(result?.user?.email);
 
       toast.success("Login successful");
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (err) {
       console.log(err);
       toast.error(err?.message);
@@ -43,7 +45,7 @@ const Login = () => {
       await getToken(result?.user?.email);
 
       toast.success("Login successful");
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (err) {
       console.log(err);
       toast.error(err?.message);
