@@ -3,7 +3,7 @@ const app = express();
 require("dotenv").config();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const jwt = require("jsonwebtoken");
 const morgan = require("morgan");
 const port = process.env.PORT || 5000;
@@ -43,6 +43,9 @@ const client = new MongoClient(process.env.DB_URI, {
 });
 async function run() {
   const usersCollection = client.db("stay-vista").collection("users");
+
+  const roomsCollection = client.db("stay-vista").collection("rooms");
+
   try {
     // auth related api
     app.post("/jwt", async (req, res) => {
@@ -92,6 +95,19 @@ async function run() {
         },
         options
       );
+      res.send(result);
+    });
+
+    //Get all rooms
+    app.get("/rooms", async (req, res) => {
+      const result = await roomsCollection.find().toArray();
+      res.send(result);
+    });
+
+    //Get single room
+    app.get("/room/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await roomsCollection.findOne({ _id: new ObjectId(id) });
       res.send(result);
     });
 
