@@ -98,6 +98,7 @@ async function run() {
       res.send(result);
     });
 
+    //All rooms related api
     //Get all rooms
     app.get("/rooms", async (req, res) => {
       const result = await roomsCollection.find().toArray();
@@ -108,6 +109,14 @@ async function run() {
     app.get("/room/:id", async (req, res) => {
       const id = req.params.id;
       const result = await roomsCollection.findOne({ _id: new ObjectId(id) });
+      res.send(result);
+    });
+
+    //Save a room
+    app.post("/room", verifyToken, async (req, res) => {
+      const room = req.body;
+      const result = await roomsCollection.insertOne(room);
+
       res.send(result);
     });
 
