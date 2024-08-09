@@ -10,12 +10,14 @@ import { AiOutlineBars } from "react-icons/ai";
 import { BsGraphUp, BsFillHouseAddFill } from "react-icons/bs";
 import { MdHomeWork } from "react-icons/md";
 import useAuth from "../../../hooks/useAuth";
+import useRole from "../../../hooks/useRole";
 
 const Sidebar = () => {
   const { logOut } = useAuth();
   const [toggle, setToggle] = useState(false);
   const [isActive, setActive] = useState(false);
-
+  const [role] = useRole();
+  console.log(role);
   //   For guest/host menu item toggle button
   const toggleHandler = (event) => {
     setToggle(event.target.checked);
