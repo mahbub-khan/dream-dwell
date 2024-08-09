@@ -7,10 +7,12 @@ import ToggleBtn from "../../Button/ToggleBtn";
 import { GrLogout } from "react-icons/gr";
 import { FcSettings } from "react-icons/fc";
 import { AiOutlineBars } from "react-icons/ai";
-import { BsGraphUp, BsFillHouseAddFill } from "react-icons/bs";
-import { MdHomeWork } from "react-icons/md";
+import { BsGraphUp } from "react-icons/bs";
 import useAuth from "../../../hooks/useAuth";
 import useRole from "../../../hooks/useRole";
+import HostMenu from "./HostMenu";
+import GuestMenu from "./GuestMenu";
+import AdminMenu from "./AdminMenu";
 
 const Sidebar = () => {
   const { logOut } = useAuth();
@@ -66,18 +68,10 @@ const Sidebar = () => {
                 label="Statistics"
                 address="/dashboard"
               />
-              <MenuItem
-                icon={BsFillHouseAddFill}
-                label="Add a Room"
-                address="add-room"
-              />
-              <MenuItem
-                icon={MdHomeWork}
-                label="My Listings"
-                address="my-listings"
-              />
-
-              {/* Menu Items */}
+              {/* Menu based on User role*/}
+              {role === "host" && <HostMenu />}
+              {role === "guest" && <GuestMenu />}
+              {role === "admin" && <AdminMenu />}
             </nav>
           </div>
         </div>
