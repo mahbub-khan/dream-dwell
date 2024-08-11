@@ -1,10 +1,11 @@
 import { DateRange } from "react-date-range";
 
-const CalendarComponent = ({}) => {
+const CalendarComponent = ({ value }) => {
   return (
     <DateRange
-      //ranges={[value]}
+      ranges={[value]}
       rangeColors={["#f43f5e"]}
+      minDate={new Date()}
       direction="vertical"
       showDateDisplay={false}
     />
