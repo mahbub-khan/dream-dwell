@@ -1,6 +1,5 @@
 import Container from "../../components/Shared/Container";
 import { useLoaderData } from "react-router-dom";
-import Loader from "../../components/Shared/Loader";
 import { Helmet } from "react-helmet-async";
 import Header from "../../components/RoomDetails/Header/Header";
 import RoomInfo from "../../components/RoomDetails/RoomInfo/RoomInfo";
@@ -8,7 +7,7 @@ import RoomReservation from "../../components/RoomDetails/RoomReservation/RoomRe
 
 const RoomDetails = () => {
   const room = useLoaderData();
-  console.log(room);
+  //console.log(room);
 
   // if (loading) return <Loader />;
 
