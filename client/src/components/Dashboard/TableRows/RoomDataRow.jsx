@@ -24,7 +24,7 @@ const RoomDataRow = ({ room }) => {
             </div>
           </div>
           <div className="ml-3">
-            <p className="text-[#3b82f5] whitespace-no-wrap font-semibold">
+            <p className="text-[#3b82f5] whitespace-no-wrap font-normal">
               {room?.title}
             </p>
           </div>
@@ -47,7 +47,7 @@ const RoomDataRow = ({ room }) => {
         </p>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <span className="relative cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+        <span className="relative cursor-pointer inline-block px-3 py-1 font-normal text-green-900 leading-tight">
           <span
             aria-hidden="true"
             className="absolute inset-0 bg-red-200 opacity-50 rounded-full"
@@ -56,7 +56,7 @@ const RoomDataRow = ({ room }) => {
         </span>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <span className="relative cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+        <span className="relative cursor-pointer inline-block px-3 py-1 font-normal text-green-900 leading-tight">
           <span
             aria-hidden="true"
             className="absolute inset-0 bg-green-200 opacity-50 rounded-full"
