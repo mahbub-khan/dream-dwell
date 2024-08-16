@@ -28,7 +28,7 @@ export const getBookings = async (email) => {
 };
 
 //get all host bookings by email
-export const getHostBooking = async (email) => {
+export const getHostBookings = async (email) => {
   const { data } = await axiosSecure(`/bookings/host/?email=${email}`);
   return data;
 };
