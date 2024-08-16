@@ -7,6 +7,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const jwt = require("jsonwebtoken");
 const morgan = require("morgan");
 const port = process.env.PORT || 5000;
+const stripe = require("stripe")(process.env.STRIPE_SK);
 
 // middleware
 const corsOptions = {
@@ -45,6 +46,8 @@ async function run() {
   const usersCollection = client.db("stay-vista").collection("users");
 
   const roomsCollection = client.db("stay-vista").collection("rooms");
+
+  const bookingCollection = client.db("stay-vista").collection("bookings");
 
   try {
     // auth related api
@@ -128,11 +131,49 @@ async function run() {
       res.send(result);
     });
 
-    //Save a room
+    //Save a room in Database
     app.post("/room", verifyToken, async (req, res) => {
       const room = req.body;
       const result = await roomsCollection.insertOne(room);
 
+      res.send(result);
+    });
+
+    //Generate client secret for stripe payment
+    app.post("/create-payment-intent", verifyToken, async (req, res) => {
+      const { price } = req.body;
+      const amount = parseInt(price * 100);
+
+      if (!price || amount < 1) return;
+      const { client_secret } = await stripe.paymentIntents.create({
+        amount: amount,
+        currency: "eur",
+        payment_method_types: ["card"],
+      });
+
+      res.send({ clientSecret: client_secret });
+    });
+
+    //Save booking info in booking collection
+    app.post("/bookings", verifyToken, async (req, res) => {
+      const booking = req.body;
+      const result = await bookingCollection.insertOne(booking);
+      //Send confirmation email....
+
+      res.send(result);
+    });
+
+    //Update room booking status
+    app.patch("/rooms/status/:id", async (req, res) => {
+      const id = req.params.id;
+      const status = req.body.status;
+      const query = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          booked: status,
+        },
+      };
+      const result = await roomsCollection.updateOne(query, updateDoc);
       res.send(result);
     });
 
