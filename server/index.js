@@ -139,6 +139,30 @@ async function run() {
       res.send(result);
     });
 
+    //All Booking related api
+
+    //Get all bookings for guest
+    app.get("/bookings", async (req, res) => {
+      const email = req.query.email;
+
+      if (!email) return res.send([]);
+
+      const query = { "guest.email": email };
+      const result = await bookingCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    //Get all bookings for host
+    app.get("/bookings/host", async (req, res) => {
+      const email = req.query.email;
+
+      if (!email) return res.send([]);
+
+      const query = { host: email };
+      const result = await bookingCollection.find(query).toArray();
+      res.send(result);
+    });
+
     //Generate client secret for stripe payment
     app.post("/create-payment-intent", verifyToken, async (req, res) => {
       const { price } = req.body;
