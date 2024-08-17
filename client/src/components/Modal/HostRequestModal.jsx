@@ -32,12 +32,11 @@ const HostRequestModal = ({ modalHandler, closeModal, isOpen }) => {
                   as="h3"
                   className="text-lg font-medium text-center leading-6 text-gray-900"
                 >
-                  Become A Host!
+                  Want to be A Host!
                 </Dialog.Title>
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">
-                    Please read all the terms & conditions before becoming a
-                    host.
+                    Please press &quot;Continue&quot; to become a host.
                   </p>
                 </div>
                 <hr className="mt-8 " />
