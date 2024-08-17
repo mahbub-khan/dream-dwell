@@ -90,7 +90,23 @@ async function run() {
       const options = { upsert: true };
       const isExist = await usersCollection.findOne(query);
       console.log("User found?----->", isExist);
-      if (isExist) return res.send(isExist);
+
+      if (isExist) {
+        if (user?.status === "Requested") {
+          const result = await usersCollection.updateOne(
+            query,
+            {
+              $set: user,
+            },
+            options
+          );
+          return res.send(result);
+        } else {
+          //user exists and no request sent to be a host
+          return res.send(isExist);
+        }
+      }
+
       const result = await usersCollection.updateOne(
         query,
         {

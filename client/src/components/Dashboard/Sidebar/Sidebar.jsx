@@ -1,6 +1,6 @@
 import { useState } from "react";
 // Components
-import MenuItem from "./MenuItem";
+
 import Logo from "../../Shared/Logo/Logo";
 import ToggleBtn from "../../Button/ToggleBtn";
 // Icons
@@ -10,9 +10,10 @@ import { AiOutlineBars } from "react-icons/ai";
 import { BsGraphUp } from "react-icons/bs";
 import useAuth from "../../../hooks/useAuth";
 import useRole from "../../../hooks/useRole";
-import HostMenu from "./HostMenu";
-import GuestMenu from "./GuestMenu";
-import AdminMenu from "./AdminMenu";
+import MenuItem from "../Menu/MenuItem";
+import HostMenu from "../Menu/HostMenu";
+import GuestMenu from "../Menu/GuestMenu";
+import AdminMenu from "../Menu/AdminMenu";
 
 const Sidebar = () => {
   const { logOut } = useAuth();
