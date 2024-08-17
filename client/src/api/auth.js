@@ -33,3 +33,9 @@ export const getRole = async (email) => {
 
   return data.role;
 };
+
+//Get all users
+export const getAllUsers = async () => {
+  const { data } = await axiosSecure("/users");
+  return data;
+};

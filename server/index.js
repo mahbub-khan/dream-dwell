@@ -108,6 +108,12 @@ async function run() {
       res.send(result);
     });
 
+    //Get all users
+    app.get("/users", async (req, res) => {
+      const result = await usersCollection.find().toArray();
+      res.send(result);
+    });
+
     //All rooms related api
     //Get all rooms
     app.get("/rooms", async (req, res) => {
@@ -142,7 +148,7 @@ async function run() {
     //All Booking related api
 
     //Get all bookings for guest
-    app.get("/bookings", async (req, res) => {
+    app.get("/bookings", verifyToken, async (req, res) => {
       const email = req.query.email;
 
       if (!email) return res.send([]);
@@ -153,7 +159,7 @@ async function run() {
     });
 
     //Get all bookings for host
-    app.get("/bookings/host", async (req, res) => {
+    app.get("/bookings/host", verifyToken, async (req, res) => {
       const email = req.query.email;
 
       if (!email) return res.send([]);
