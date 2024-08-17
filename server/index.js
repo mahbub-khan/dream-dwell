@@ -19,9 +19,10 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
+
 const verifyToken = async (req, res, next) => {
   const token = req.cookies?.token;
-  console.log(token);
+
   if (!token) {
     return res.status(401).send({ message: "unauthorized access" });
   }
@@ -31,6 +32,7 @@ const verifyToken = async (req, res, next) => {
       return res.status(401).send({ message: "unauthorized access" });
     }
     req.user = decoded;
+
     next();
   });
 };
@@ -43,13 +45,40 @@ const client = new MongoClient(process.env.DB_URI, {
   },
 });
 async function run() {
-  const usersCollection = client.db("stay-vista").collection("users");
-
-  const roomsCollection = client.db("stay-vista").collection("rooms");
-
-  const bookingCollection = client.db("stay-vista").collection("bookings");
-
   try {
+    //All DB Collections
+    const usersCollection = client.db("stay-vista").collection("users");
+
+    const roomsCollection = client.db("stay-vista").collection("rooms");
+
+    const bookingCollection = client.db("stay-vista").collection("bookings");
+
+    //Role Verification Middlewares
+    //For Admin
+    const verifyAdmin = async (req, res, next) => {
+      const user = req.user;
+      const query = { email: user?.email };
+      const result = await usersCollection.findOne(query);
+
+      if (!result || result?.role !== "admin")
+        return res.status(401).send({ message: "Unauthorized Access" });
+
+      next();
+    };
+
+    //For Host
+    const verifyHost = async (req, res, next) => {
+      const user = req.user;
+      const query = { email: user?.email };
+
+      const result = await usersCollection.findOne(query);
+
+      if (!result || result?.role !== "host")
+        return res.status(401).send({ message: "Unauthorized Access" });
+
+      next();
+    };
+
     // auth related api
     app.post("/jwt", async (req, res) => {
       const user = req.body;
@@ -118,14 +147,14 @@ async function run() {
     });
 
     //Get user role
-    app.get("/user/:email", async (req, res) => {
+    app.get("/user/:email", verifyToken, async (req, res) => {
       const email = req.params.email;
       const result = await usersCollection.findOne({ email });
       res.send(result);
     });
 
     //Get all users
-    app.get("/users", async (req, res) => {
+    app.get("/users", verifyToken, verifyAdmin, async (req, res) => {
       const result = await usersCollection.find().toArray();
       res.send(result);
     });
@@ -154,7 +183,7 @@ async function run() {
     });
 
     //Get all rooms for host
-    app.get("/rooms/:email", verifyToken, async (req, res) => {
+    app.get("/rooms/:email", verifyToken, verifyHost, async (req, res) => {
       const email = req.params.email;
       const result = await roomsCollection
         .find({ "host.email": email })
