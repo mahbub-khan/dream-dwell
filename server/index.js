@@ -269,35 +269,6 @@ async function run() {
     });
 
     //All Stat related API
-    //Admin Stat Data
-    app.get("/admin-stat", verifyToken, verifyAdmin, async (req, res) => {
-      const bookingDetails = await bookingCollection
-        .find({}, { projection: { date: 1, price: 1 } })
-        .toArray();
-
-      const userCount = await usersCollection.countDocuments();
-      const roomCount = await roomsCollection.countDocuments();
-
-      const totalSale = bookingDetails.reduce(
-        (sum, data) => sum + data.price,
-        0
-      );
-
-      const chartData = bookingDetails.map((data) => {
-        const day = new Date(data.date).getDate();
-        const month = new Date(data.date).getMonth() + 1;
-        return [day + "/" + month, data.price];
-      });
-
-      chartData.unshift(["Day", "Sale"]);
-      res.send({
-        totalSale,
-        bookingCount: bookingDetails.length,
-        userCount,
-        roomCount,
-        chartData,
-      });
-    });
 
     //Guest stat data
     app.get("/guest-stat", verifyToken, async (req, res) => {
@@ -340,6 +311,83 @@ async function run() {
         chartData,
         guestSince: timestamp,
         totalSpent,
+      });
+    });
+
+    // Host Statistics
+    app.get("/host-stat", verifyToken, verifyHost, async (req, res) => {
+      const { email } = req.user;
+
+      const bookingsDetails = await bookingCollection
+        .find(
+          { host: email },
+          {
+            projection: {
+              date: 1,
+              price: 1,
+            },
+          }
+        )
+        .toArray();
+      const roomCount = await roomsCollection.countDocuments({
+        "host.email": email,
+      });
+      const totalSale = bookingsDetails.reduce(
+        (sum, data) => sum + data.price,
+        0
+      );
+      const chartData = bookingsDetails.map((data) => {
+        const day = new Date(data.date).getDate();
+        const month = new Date(data.date).getMonth() + 1;
+        return [day + "/" + month, data.price];
+      });
+
+      chartData.splice(0, 0, ["Day", "Sale"]);
+
+      const { timestamp } = await usersCollection.findOne(
+        { email },
+        {
+          projection: {
+            timestamp: 1,
+          },
+        }
+      );
+      res.send({
+        totalSale,
+        bookingCount: bookingsDetails.length,
+        roomCount,
+        chartData,
+        hostSince: timestamp,
+      });
+    });
+
+    //Admin Stat Data
+    app.get("/admin-stat", verifyToken, verifyAdmin, async (req, res) => {
+      const bookingDetails = await bookingCollection
+        .find({}, { projection: { date: 1, price: 1 } })
+        .toArray();
+
+      const userCount = await usersCollection.countDocuments();
+      const roomCount = await roomsCollection.countDocuments();
+
+      const totalSale = bookingDetails.reduce(
+        (sum, data) => sum + data.price,
+        0
+      );
+
+      const chartData = bookingDetails.map((data) => {
+        const day = new Date(data.date).getDate();
+        const month = new Date(data.date).getMonth() + 1;
+        return [day + "/" + month, data.price];
+      });
+
+      chartData.unshift(["Day", "Sale"]);
+      res.send({
+        totalSale,
+        bookingCount: bookingDetails.length,
+        userCount,
+        roomCount,
+        chartData,
       });
     });
 

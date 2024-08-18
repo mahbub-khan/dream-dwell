@@ -13,15 +13,21 @@ export const imageUpload = async (image) => {
   return data;
 };
 
-//Admin stat data
-export const getAdminStat = async () => {
-  const { data } = await axiosSecure("/admin-stat");
-  return data;
-};
-
 // Guest stat data
 export const getGuestStat = async () => {
   const { data } = await axiosSecure.get("/guest-stat");
 
+  return data;
+};
+
+// Host statistics
+export const getHostStat = async () => {
+  const { data } = await axiosSecure.get("/host-stat");
+  return data;
+};
+
+//Admin stat data
+export const getAdminStat = async () => {
+  const { data } = await axiosSecure("/admin-stat");
   return data;
 };

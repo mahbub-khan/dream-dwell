@@ -1,29 +1,26 @@
 import { Calendar } from "react-date-range";
 import { FaEuroSign } from "react-icons/fa";
-import { BsFillCartPlusFill } from "react-icons/bs";
+import { BsFillCartPlusFill, BsFillHouseDoorFill } from "react-icons/bs";
 import { GiPlayerTime } from "react-icons/gi";
-
-import { formatDistanceToNow } from "date-fns";
-import { getGuestStat } from "../../../api/utils";
-import { useQuery } from "@tanstack/react-query";
-
 import SalesLineChart from "./SalesLineChart";
+import { formatDistanceToNow } from "date-fns";
+import { useQuery } from "@tanstack/react-query";
 import Loader from "../../Shared/Loader";
-
-const GuestStatistics = () => {
+import { getHostStat } from "../../../api/utils";
+const HostStatistics = () => {
   const { data: statData = [], isLoading } = useQuery({
-    queryKey: ["statData"],
-    queryFn: async () => await getGuestStat(),
+    queryKey: ["hostStatData"],
+    queryFn: async () => await getHostStat(),
   });
 
   if (isLoading) return <Loader />;
 
   return (
     <div>
-      <div className="mt-12">
+      <div className="mt-8 mb-12">
         {/* small cards */}
         <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {/* Spent Card */}
+          {/* Sales Card */}
           <div className="flex items-center bg-clip-border rounded-xl justify-between bg-white text-gray-700 shadow-xl border-2 ">
             <div
               className={`ml-4 bg-clip-border rounded-xl overflow-hidden bg-gradient-to-tr shadow-lg grid h-16 w-16 place-items-center from-orange-600 to-orange-400 text-white shadow-orange-500/40`}
@@ -32,10 +29,10 @@ const GuestStatistics = () => {
             </div>
             <div className="p-4 text-right">
               <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
-                Total Spent
+                Total Sales
               </p>
               <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                {statData?.totalSpent}€
+                {statData?.totalSale}€
               </h4>
             </div>
           </div>
@@ -43,7 +40,7 @@ const GuestStatistics = () => {
           {/* Total Bookings */}
           <div className="flex items-center bg-clip-border rounded-xl justify-between bg-white text-gray-700 shadow-xl border-2 ">
             <div
-              className={`ml-4 bg-clip-border rounded-xl overflow-hidden bg-gradient-to-tr shadow-lg grid h-16 w-16  place-items-center from-blue-600 to-blue-400 text-white shadow-blue-500/40`}
+              className={`ml-4 bg-clip-border rounded-xl overflow-hidden bg-gradient-to-tr shadow-lg grid h-16 w-16 place-items-center from-blue-600 to-blue-400 text-white shadow-blue-500/40`}
             >
               <BsFillCartPlusFill className="w-6 h-6 text-white" />
             </div>
@@ -57,20 +54,37 @@ const GuestStatistics = () => {
             </div>
           </div>
 
+          {/* Total Rooms */}
+          <div className="flex items-center bg-clip-border rounded-xl justify-between bg-white text-gray-700 shadow-xl border-2 ">
+            <div
+              className={`ml-4 bg-clip-border rounded-xl overflow-hidden bg-gradient-to-tr shadow-lg grid h-16 w-16 place-items-center from-pink-600 to-pink-400 text-white shadow-pink-500/40`}
+            >
+              <BsFillHouseDoorFill className="w-6 h-6 text-white" />
+            </div>
+            <div className="p-4 text-right">
+              <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+                Total Rooms
+              </p>
+              <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                {statData?.roomCount}
+              </h4>
+            </div>
+          </div>
+
           {/* Users Card */}
           <div className="flex items-center bg-clip-border rounded-xl justify-between bg-white text-gray-700 shadow-xl border-2 ">
             <div
-              className={`ml-4 bg-clip-border rounded-xl overflow-hidden bg-gradient-to-tr shadow-lg grid h-16 w-16  place-items-center from-green-600 to-green-400 text-white shadow-green-500/40`}
+              className={`ml-4 bg-clip-border rounded-xl overflow-hidden bg-gradient-to-tr shadow-lg grid h-16 w-16 place-items-center from-green-600 to-green-400 text-white shadow-green-500/40`}
             >
               <GiPlayerTime className="w-6 h-6 text-white" />
             </div>
             <div className="p-4 text-right">
               <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
-                Guest Since...
+                Host Since...
               </p>
-              <h4 className="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-blue-gray-900">
-                {statData?.guestSince &&
-                  formatDistanceToNow(new Date(statData.guestSince))}
+              <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                {statData?.hostSince &&
+                  formatDistanceToNow(new Date(statData.hostSince))}
               </h4>
             </div>
           </div>
@@ -91,4 +105,4 @@ const GuestStatistics = () => {
   );
 };
 
-export default GuestStatistics;
+export default HostStatistics;
