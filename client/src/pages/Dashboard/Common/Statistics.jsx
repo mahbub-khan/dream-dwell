@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import useRole from "../../../hooks/useRole";
 import AdminStatistics from "../../../components/Dashboard/Statistics/AdminStatistics";
-// import GuestStatistics from '../../../components/Dashboard/Statistics/Guest/GuestStatistics'
+import GuestStatistics from "../../../components/Dashboard/Statistics/GuestStatistics";
 // import HostStatistics from '../../../components/Dashboard/Statistics/Host/HostStatistics'
 
 const Statistics = () => {
@@ -12,9 +12,9 @@ const Statistics = () => {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      {/* {role === 'guest' && <GuestStatistics />}
-      {role === 'host' && <HostStatistics />}*/}
+      {/* {role === 'host' && <HostStatistics />}*/}
       {role === "admin" && <AdminStatistics />}
+      {role === "guest" && <GuestStatistics />}
     </div>
   );
 };

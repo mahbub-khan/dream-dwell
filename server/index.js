@@ -299,6 +299,50 @@ async function run() {
       });
     });
 
+    //Guest stat data
+    app.get("/guest-stat", verifyToken, async (req, res) => {
+      const { email } = req.user;
+
+      const bookingsDetails = await bookingCollection
+        .find(
+          { "guest.email": email },
+          {
+            projection: {
+              date: 1,
+              price: 1,
+            },
+          }
+        )
+        .toArray();
+
+      const chartData = bookingsDetails.map((data) => {
+        const day = new Date(data.date).getDate();
+        const month = new Date(data.date).getMonth() + 1;
+        return [day + "/" + month, data.price];
+      });
+
+      chartData.splice(0, 0, ["Day", "Reservation"]);
+
+      const { timestamp } = await usersCollection.findOne(
+        { email },
+        {
+          projection: {
+            timestamp: 1,
+          },
+        }
+      );
+      const totalSpent = bookingsDetails.reduce(
+        (acc, data) => acc + data.price,
+        0
+      );
+      res.send({
+        bookingCount: bookingsDetails.length,
+        chartData,
+        guestSince: timestamp,
+        totalSpent,
+      });
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
