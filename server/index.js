@@ -154,7 +154,7 @@ async function run() {
     });
 
     //Get all users
-    app.get("/users", verifyToken, verifyAdmin, async (req, res) => {
+    app.get("/users", verifyToken, async (req, res) => {
       const result = await usersCollection.find().toArray();
       res.send(result);
     });
@@ -266,6 +266,37 @@ async function run() {
       };
       const result = await roomsCollection.updateOne(query, updateDoc);
       res.send(result);
+    });
+
+    //All Stat related API
+    //Admin Stat Data
+    app.get("/admin-stat", verifyToken, verifyAdmin, async (req, res) => {
+      const bookingDetails = await bookingCollection
+        .find({}, { projection: { date: 1, price: 1 } })
+        .toArray();
+
+      const userCount = await usersCollection.countDocuments();
+      const roomCount = await roomsCollection.countDocuments();
+
+      const totalSale = bookingDetails.reduce(
+        (sum, data) => sum + data.price,
+        0
+      );
+
+      const chartData = bookingDetails.map((data) => {
+        const day = new Date(data.date).getDate();
+        const month = new Date(data.date).getMonth() + 1;
+        return [day + "/" + month, data.price];
+      });
+
+      chartData.unshift(["Day", "Sale"]);
+      res.send({
+        totalSale,
+        bookingCount: bookingDetails.length,
+        userCount,
+        roomCount,
+        chartData,
+      });
     });
 
     // Send a ping to confirm a successful connection
