@@ -206,6 +206,14 @@ async function run() {
       res.send(result);
     });
 
+    //Delete a room from DB
+    app.delete("/rooms/:id", verifyToken, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await roomsCollection.deleteOne(query);
+      res.send(result);
+    });
+
     //All Booking related api
 
     //Get all bookings for guest

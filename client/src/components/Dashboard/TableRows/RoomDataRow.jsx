@@ -1,12 +1,36 @@
 import { format } from "date-fns";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import DeleteModal from "../../Modal/DeleteModal";
+import { deleteRoom } from "../../../api/rooms";
 
-const RoomDataRow = ({ room }) => {
+const RoomDataRow = ({ room, refetch }) => {
   const navigate = useNavigate();
+  let [isOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  const modalHandler = (id) => {
+    deleteRoom(id)
+      .then((data) => {
+        refetch();
+        toast.success("Room Deleted");
+      })
+      .catch((err) => toast.error(err.message));
+    closeModal();
+  };
 
   const handleRowClick = () => {
     navigate(`/room/${room._id}`);
   };
+
   return (
     <tr>
       <td
@@ -47,13 +71,22 @@ const RoomDataRow = ({ room }) => {
         </p>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <span className="relative cursor-pointer inline-block px-3 py-1 font-normal text-green-900 leading-tight">
+        <span
+          onClick={openModal}
+          className="relative cursor-pointer inline-block px-3 py-1 font-normal text-red-900 leading-tight"
+        >
           <span
             aria-hidden="true"
-            className="absolute inset-0 bg-red-200 opacity-50 rounded-full"
+            className="absolute inset-0 bg-red-400 opacity-50 rounded-full"
           ></span>
           <span className="relative">Delete</span>
         </span>
+        <DeleteModal
+          isOpen={isOpen}
+          closeModal={closeModal}
+          modalHandler={modalHandler}
+          id={room._id}
+        />
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <span className="relative cursor-pointer inline-block px-3 py-1 font-normal text-green-900 leading-tight">

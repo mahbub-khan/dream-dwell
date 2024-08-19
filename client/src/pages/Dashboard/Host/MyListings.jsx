@@ -3,14 +3,24 @@ import useAuth from "../../../hooks/useAuth";
 import { useEffect, useState } from "react";
 import { getHostRooms } from "../../../api/rooms";
 import RoomDataRow from "../../../components/Dashboard/TableRows/RoomDataRow";
+import { useQuery } from "@tanstack/react-query";
+import Loader from "../../../components/Shared/Loader";
 
 const MyListings = () => {
-  const { user } = useAuth();
-  const [rooms, setRooms] = useState([]);
+  const { user, loading } = useAuth();
 
-  useEffect(() => {
-    getHostRooms(user?.email).then((data) => setRooms(data));
-  }, [user]);
+  const {
+    data: rooms = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    enabled: !loading,
+    queryKey: ["rooms"],
+    queryFn: async () => await getHostRooms(user?.email),
+  });
+
+  if (isLoading) return <Loader />;
+
   return (
     <>
       <Helmet>
@@ -71,7 +81,7 @@ const MyListings = () => {
                 <tbody>
                   {/* Room row data */}
                   {rooms.map((room) => (
-                    <RoomDataRow key={room._id} room={room} />
+                    <RoomDataRow key={room._id} room={room} refetch={refetch} />
                   ))}
                 </tbody>
               </table>

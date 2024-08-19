@@ -24,3 +24,9 @@ export const addRoom = async (roomData) => {
 
   return data;
 };
+
+//delete a room
+export const deleteRoom = async (id) => {
+  const { data } = await axiosSecure.delete(`/rooms/${id}`);
+  return data;
+};
