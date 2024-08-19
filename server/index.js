@@ -303,7 +303,7 @@ async function run() {
         }
       );
       const totalSpent = bookingsDetails.reduce(
-        (acc, data) => acc + data.price,
+        (sum, data) => sum + data.price,
         0
       );
       res.send({

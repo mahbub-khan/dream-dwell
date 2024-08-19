@@ -7,9 +7,6 @@ import RoomReservation from "../../components/RoomDetails/RoomReservation/RoomRe
 
 const RoomDetails = () => {
   const room = useLoaderData();
-  //console.log(room);
-
-  // if (loading) return <Loader />;
 
   return (
     <Container>

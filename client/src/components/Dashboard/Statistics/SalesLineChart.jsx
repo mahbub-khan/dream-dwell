@@ -25,18 +25,23 @@ const SalesLineChart = ({ data }) => {
       setLoading(false);
     }, 500);
   }, []);
+
   return (
     <>
       {loading ? (
-        <Loader />
-      ) : (
+        <Loader smallHeight />
+      ) : data.length > 1 ? (
         <Chart
           chartType="LineChart"
           width="100%"
-          height="400px"
           data={data}
           options={options}
         />
+      ) : (
+        <>
+          <Loader smallHeight />
+          <p className="text-center">No data available</p>
+        </>
       )}
     </>
   );
