@@ -206,7 +206,23 @@ async function run() {
       res.send(result);
     });
 
-    //Delete a room from DB
+    //Update a room in DB - for host
+    app.put("/rooms/:id", verifyToken, async (req, res) => {
+      const room = req.body;
+      const filter = { _id: new ObjectId(req.params.id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: room,
+      };
+      const result = await roomsCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+      res.send(result);
+    });
+
+    //Delete a room from DB - for host
     app.delete("/rooms/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };

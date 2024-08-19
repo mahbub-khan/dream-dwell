@@ -1,6 +1,5 @@
 import { Helmet } from "react-helmet-async";
 import useAuth from "../../../hooks/useAuth";
-import { useEffect, useState } from "react";
 import { getHostRooms } from "../../../api/rooms";
 import RoomDataRow from "../../../components/Dashboard/TableRows/RoomDataRow";
 import { useQuery } from "@tanstack/react-query";

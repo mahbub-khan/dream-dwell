@@ -37,6 +37,9 @@ const AddRoomForm = ({
                 className="w-full px-4 py-3 border-rose-300 focus:outline-rose-500 rounded-md"
                 name="category"
               >
+                <option value="" selected disabled hidden>
+                  Choose a Category
+                </option>
                 {categories.map((category) => (
                   <option value={category.label} key={category.label}>
                     {category.label}
