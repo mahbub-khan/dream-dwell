@@ -35,7 +35,7 @@ const HostRequestModal = ({ modalHandler, closeModal, isOpen }) => {
                   Want to be A Host!
                 </Dialog.Title>
                 <div className="mt-2">
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 text-center">
                     Please press &quot;Continue&quot; to become a host.
                   </p>
                 </div>

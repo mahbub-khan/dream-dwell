@@ -9,6 +9,12 @@ const RoomReservation = ({ room }) => {
   let [isOpen, setIsOpen] = useState(false);
   const { user } = useAuth();
 
+  const isBooked = () => {
+    if (room?.booked === true) return "Already Booked";
+
+    return "Reserve";
+  };
+
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -58,7 +64,7 @@ const RoomReservation = ({ room }) => {
       <div className="p-4">
         <Button
           onClick={() => setIsOpen(true)}
-          label={"Reserve"}
+          label={isBooked()}
           disabled={room.host.email === user.email || room.booked}
         />
       </div>
