@@ -54,7 +54,7 @@ const AddRoomForm = ({
               </label>
               <DateRange
                 ranges={[dates]}
-                rangeColors={["#F43F5E"]}
+                rangeColors={["#d94e28"]}
                 onChange={handleDates}
                 minDate={new Date()}
               />
@@ -88,7 +88,7 @@ const AddRoomForm = ({
                       accept="image/*"
                       hidden
                     />
-                    <div className="bg-rose-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-rose-500">
+                    <div className="bg-[#d94e28] text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-[#e26847]">
                       {uploadButtonText}
                     </div>
                   </label>
@@ -171,7 +171,7 @@ const AddRoomForm = ({
 
         <button
           type="submit"
-          className="w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500"
+          className="w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-[#d94e28]"
         >
           {loading ? (
             <TbFidgetSpinner className="m-auto animate-spin" size={24} />

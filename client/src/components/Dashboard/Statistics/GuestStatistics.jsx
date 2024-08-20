@@ -83,7 +83,7 @@ const GuestStatistics = () => {
           </div>
           {/* Calender */}
           <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden">
-            <Calendar color="#F43F5E" />
+            <Calendar color="#d94e28" />
           </div>
         </div>
       </div>

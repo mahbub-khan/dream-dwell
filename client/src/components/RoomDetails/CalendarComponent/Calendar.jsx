@@ -4,7 +4,7 @@ const CalendarComponent = ({ value }) => {
   return (
     <DateRange
       ranges={[value]}
-      rangeColors={["#f43f5e"]}
+      rangeColors={["#d94e28"]}
       minDate={new Date()}
       direction="vertical"
       showDateDisplay={false}

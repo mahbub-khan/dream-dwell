@@ -14,7 +14,7 @@ export const options = {
   title: "Sales Over Time",
   curveType: "function",
   legend: { position: "bottom" },
-  series: [{ color: "#F43F5E" }],
+  series: [{ color: "#d94e28" }],
 };
 
 const SalesLineChart = ({ data }) => {
