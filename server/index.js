@@ -254,6 +254,14 @@ async function run() {
       res.send(result);
     });
 
+    //Cancel/Delete Booking for a Guest
+    app.delete("/bookings/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await bookingCollection.deleteOne(query);
+      res.send(result);
+    });
+
     //Generate client secret for stripe payment
     app.post("/create-payment-intent", verifyToken, async (req, res) => {
       const { price } = req.body;
