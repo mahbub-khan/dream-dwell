@@ -8,8 +8,10 @@ import useAuth from "../../../hooks/useAuth";
 const RoomReservation = ({ room }) => {
   let [isOpen, setIsOpen] = useState(false);
   const { user } = useAuth();
+  //console.log(user.email);
 
   const isBooked = () => {
+    if (user?.email === room?.host?.email) return "You are the Host 🏠";
     if (room?.booked === true) return "Already Booked";
 
     return "Reserve";
