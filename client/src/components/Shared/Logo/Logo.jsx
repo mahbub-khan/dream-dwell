@@ -5,7 +5,7 @@ const Logo = () => {
   return (
     <Link to="/">
       <img
-        className="hidden md:block"
+        className="block"
         src={logoImg}
         alt="logo"
         width="140"
