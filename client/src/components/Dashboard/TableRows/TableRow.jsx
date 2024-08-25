@@ -1,25 +1,28 @@
 import { format } from "date-fns";
 import { useState } from "react";
-import { cancelBooking } from "../../../api/bookings";
+import { cancelBooking, updateStatus } from "../../../api/bookings";
 import CancelModal from "../../Modal/CancelModal";
 import toast from "react-hot-toast";
 
 const TableRow = ({ booking, refetch }) => {
   let [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
-  function closeCancelModal() {
+  const closeCancelModal = () => {
     console.log("Close modal Called");
     setIsCancelModalOpen(false);
-  }
+  };
 
-  const modalHandler = (id) => {
-    cancelBooking(id)
-      .then((data) => {
-        refetch();
-        toast.success("Booking Canceled");
-      })
-      .catch((err) => toast.error(err.message));
-    closeCancelModal;
+  const modalHandler = async (id) => {
+    try {
+      await cancelBooking(id);
+      await updateStatus(booking.roomId, false);
+      refetch();
+      toast.success("Booking Canceled");
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      closeCancelModal();
+    }
   };
   return (
     <tr>
@@ -80,13 +83,14 @@ const TableRow = ({ booking, refetch }) => {
             className="absolute inset-0 bg-red-200 opacity-50 rounded-full"
           ></span>
           <span className="relative">Cancel</span>
-          <CancelModal
-            isCancelModalOpen={isCancelModalOpen}
-            modalHandler={modalHandler}
-            closeCancelModal={closeCancelModal}
-            id={booking._id}
-          />
         </span>
+
+        <CancelModal
+          isCancelModalOpen={isCancelModalOpen}
+          modalHandler={modalHandler}
+          closeCancelModal={closeCancelModal}
+          id={booking._id}
+        />
       </td>
     </tr>
   );

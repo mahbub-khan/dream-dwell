@@ -16,7 +16,7 @@ const RoomDataRow = ({ room, refetch }) => {
   }
 
   function closeModal() {
-    console.log("Close modal Called");
+    //console.log("Close modal Called");
     setIsOpen(false);
   }
 
