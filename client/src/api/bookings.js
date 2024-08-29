@@ -33,6 +33,12 @@ export const getHostBookings = async (email) => {
   return data;
 };
 
+//get all bookings for a room
+export const getBookingsForARoom = async (roomId) => {
+  const { data } = await axiosSecure(`/bookings/${roomId}`);
+  return data;
+};
+
 //Cancel Booking for a host
 export const cancelBooking = async (id) => {
   const { data } = await axiosSecure.delete(`/bookings/${id}`);

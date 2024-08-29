@@ -1,39 +1,60 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../Button/Button";
 import CalendarComponent from "../CalendarComponent/Calendar";
-import { formatDistance } from "date-fns";
+import { differenceInCalendarDays } from "date-fns";
 import BookingModal from "../../Modal/BookingModal";
 import useAuth from "../../../hooks/useAuth";
+import {
+  findMinDate,
+  generateDateArray,
+  isBooked,
+} from "../Utilities/RoomReservationUtilies";
+import { useQuery } from "@tanstack/react-query";
+import { getBookingsForARoom } from "../../../api/bookings";
 
 const RoomReservation = ({ room }) => {
   let [isOpen, setIsOpen] = useState(false);
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   //console.log(user.email);
-
-  const isBooked = () => {
-    if (user?.email === room?.host?.email) return "You are the Host 🏠";
-    if (room?.booked === true) return "Already Booked";
-
-    return "Reserve";
-  };
+  const [totalDays, setTotalDays] = useState(0);
+  const [bookedDates, setBookedDates] = useState([]);
 
   const closeModal = () => {
     setIsOpen(false);
   };
 
+  const latestAvailableDate = findMinDate(room?.from);
+
+  //Fetching all the bookings for this room
+  const { data: bookings = [], isLoading } = useQuery({
+    enabled: !loading,
+    queryKey: ["bookings"],
+    queryFn: async () => await getBookingsForARoom(room?._id),
+  });
+
   //Grabbing the available dates
   const [value, setValue] = useState({
-    startDate: new Date(room?.from),
+    startDate: latestAvailableDate,
     endDate: new Date(room?.to),
     key: "selection",
   });
 
-  //Total days
-  const totalDays = parseInt(
-    formatDistance(new Date(room?.to), new Date(room?.from)).split(" ")[0]
-  );
+  const handleDateSelection = (ranges) => {
+    setValue(ranges.selection);
+    //console.log("Range:", ranges.selection);
+    //console.log("Value in Room:", value);
+    setTotalDays(
+      parseInt(
+        differenceInCalendarDays(
+          ranges.selection.endDate,
+          ranges.selection.startDate
+        )
+      ) + 1
+    );
+  };
 
-  //Price calculation
+  console.log(totalDays);
+
   const totalPrice = totalDays * room?.price;
 
   const [bookingInfo, setBookingInfo] = useState({
@@ -45,12 +66,38 @@ const RoomReservation = ({ room }) => {
     host: room?.host?.email,
     location: room?.location,
     price: totalPrice,
-    to: value.endDate,
-    from: value.startDate,
+    to: value?.endDate,
+    from: value?.startDate,
     title: room?.title,
     roomId: room?._id,
     image: room?.image,
   });
+
+  console.log("Initial Booking Info: ", bookingInfo);
+
+  //updating the bookingInfo upon date selection in the calender
+  useEffect(() => {
+    setBookingInfo((prevInfo) => ({
+      ...prevInfo,
+      price: totalPrice,
+      to: value?.endDate,
+      from: value?.startDate,
+    }));
+  }, [value, totalDays, totalPrice]);
+
+  //setting the bookedDates array
+  useEffect(() => {
+    if (bookings.length) {
+      const allBookedDates = bookings.flatMap((booking) =>
+        generateDateArray(booking.from, booking.to)
+      );
+      setBookedDates(allBookedDates);
+    } else {
+      setBookedDates([]);
+    }
+  }, [bookings]);
+
+  console.log("Room Reservation:", bookedDates);
 
   return (
     <div className="rounded-xl border-[1px] border-neutral-200 overflow-hidden bg-white">
@@ -60,20 +107,31 @@ const RoomReservation = ({ room }) => {
       </div>
       <hr />
       <div className="flex justify-center">
-        <CalendarComponent value={value} />
+        <CalendarComponent
+          value={value}
+          handleDateSelection={handleDateSelection}
+          latestAvailableDate={latestAvailableDate}
+          room={room}
+          bookedDates={bookedDates}
+          isLoading={isLoading}
+        />
       </div>
       <hr />
       <div className="p-4">
         <Button
           onClick={() => setIsOpen(true)}
-          label={isBooked()}
-          disabled={room.host.email === user.email || room.booked}
+          label={isBooked(user, room, totalPrice)}
+          disabled={
+            room?.host?.email === user?.email ||
+            totalPrice === 0 ||
+            room?.booked
+          }
         />
       </div>
       <hr />
       <div className="p-4 flex items-center justify-between font-semibold text-lg">
         <p>Total</p>
-        <p>{totalPrice} €</p>
+        <p>{bookingInfo.price} €</p>
       </div>
 
       {/* Booking Modal  */}
@@ -81,6 +139,10 @@ const RoomReservation = ({ room }) => {
         isOpen={isOpen}
         closeModal={closeModal}
         bookingInfo={bookingInfo}
+        bookedDates={bookedDates}
+        setBookedDates={setBookedDates}
+        room={room}
+        latestAvailableDate={latestAvailableDate}
       />
     </div>
   );

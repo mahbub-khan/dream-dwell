@@ -10,8 +10,19 @@ import {
   updateStatus,
 } from "../../api/bookings";
 import { useNavigate } from "react-router-dom";
+import {
+  generateDateArray,
+  isAllDatesBooked,
+} from "../RoomDetails/Utilities/RoomReservationUtilies";
 
-const CheckoutForm = ({ bookingInfo, closeModal }) => {
+const CheckoutForm = ({
+  bookingInfo,
+  closeModal,
+  room,
+  bookedDates,
+  setBookedDates,
+  latestAvailableDate,
+}) => {
   const stripe = useStripe();
   const elements = useElements();
   const { user } = useAuth();
@@ -29,6 +40,8 @@ const CheckoutForm = ({ bookingInfo, closeModal }) => {
       });
     }
   }, [bookingInfo]);
+
+  console.log(bookingInfo);
 
   const handleSubmit = async (event) => {
     // Block native form submission.
@@ -90,8 +103,31 @@ const CheckoutForm = ({ bookingInfo, closeModal }) => {
         //Save payment information to the server
         await saveBookingInfo(paymentInfo);
 
-        //Update room status in DB
-        await updateStatus(bookingInfo.roomId, true);
+        // Add new dates to bookedDates
+        const newBookedDates = generateDateArray(
+          bookingInfo?.from,
+          bookingInfo?.to
+        );
+
+        setBookedDates((prevDates) => {
+          const updatedDates = [...prevDates, ...newBookedDates];
+          console.log(updatedDates);
+
+          const isRoomBooked = isAllDatesBooked(
+            updatedDates,
+            latestAvailableDate,
+            room
+          );
+          console.log(isRoomBooked);
+
+          if (isRoomBooked) {
+            //Update room status in DB if all dates are not booked
+            updateStatus(bookingInfo?.roomId, true);
+          }
+
+          return updatedDates;
+        });
+
         const text = `Booking Successful for ${bookingInfo.title}`;
         navigate("/dashboard/my-bookings");
         toast.success(text);

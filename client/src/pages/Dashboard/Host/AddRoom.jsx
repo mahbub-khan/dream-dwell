@@ -75,8 +75,9 @@ const AddRoom = () => {
   };
 
   //Handle date change from react-date-range calender
-  const handleDates = (ranges) => {
-    setDates(ranges.selection);
+  const handleDates = (items) => {
+    console.log(items);
+    setDates(items.selection);
   };
 
   //Handle Image upload button text

@@ -6,7 +6,16 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../Form/CheckOutForm";
 const stripePromise = loadStripe(import.meta.env.VITE_Stripe_PK);
 
-const BookingModal = ({ isOpen, closeModal, bookingInfo }) => {
+const BookingModal = ({
+  isOpen,
+  closeModal,
+  room,
+  bookingInfo,
+  bookedDates,
+  setBookedDates,
+  latestAvailableDate,
+}) => {
+  console.log("Booking Modal: ", bookedDates);
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -75,6 +84,10 @@ const BookingModal = ({ isOpen, closeModal, bookingInfo }) => {
                     <CheckoutForm
                       closeModal={closeModal}
                       bookingInfo={bookingInfo}
+                      bookedDates={bookedDates}
+                      setBookedDates={setBookedDates}
+                      room={room}
+                      latestAvailableDate={latestAvailableDate}
                     />
                   </Elements>
                 </Dialog.Panel>
