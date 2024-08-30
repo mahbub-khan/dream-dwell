@@ -15,7 +15,6 @@ const BookingModal = ({
   setBookedDates,
   latestAvailableDate,
 }) => {
-  console.log("Booking Modal: ", bookedDates);
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>

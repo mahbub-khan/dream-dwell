@@ -1,7 +1,6 @@
 //Checking if all the dates are booked or not
 export const isAllDatesBooked = (bookedDates, latestAvailableDate, room) => {
   const bookedDateSet = new Set(bookedDates.map((date) => date.getTime()));
-  console.log(bookedDateSet);
 
   const roomHostedForDates = generateDateArray(latestAvailableDate, room?.to);
 

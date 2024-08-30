@@ -4,12 +4,15 @@ import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { getToken, saveUser } from "../../api/auth";
 import { ImSpinner9 } from "react-icons/im";
+import { useRef } from "react";
 
 const Login = () => {
-  const { signIn, signInWithGoogle, loading } = useAuth();
+  const { signIn, signInWithGoogle, loading, resetPassword } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location?.state?.from?.pathname || "/";
+  const emailRef = useRef(null);
+
   //form submit handler
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -51,6 +54,27 @@ const Login = () => {
       toast.error(err?.message);
     }
   };
+
+  const handlePasswordForgotten = async () => {
+    const email = emailRef.current.value;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!email) {
+      toast.error("Please write your email in the email filed");
+      return;
+    } else if (!emailRegex.test(email)) {
+      toast.error("Please write a valid email");
+      return;
+    }
+
+    resetPassword(email)
+      .then(() => {
+        toast.success("Please check you inbox 📩");
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">
@@ -75,6 +99,7 @@ const Login = () => {
                 type="email"
                 name="email"
                 id="email"
+                ref={emailRef}
                 required
                 placeholder="Enter Your Email Here"
                 className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-[#d94e28] bg-gray-200 text-gray-900"
@@ -113,7 +138,10 @@ const Login = () => {
           </div>
         </form>
         <div className="space-y-1">
-          <button className="text-xs hover:underline hover:text-[#d94e28] text-gray-400">
+          <button
+            onClick={handlePasswordForgotten}
+            className="text-xs hover:underline hover:text-[#d94e28] text-gray-400"
+          >
             Forgot password?
           </button>
         </div>

@@ -53,7 +53,7 @@ const RoomReservation = ({ room }) => {
     );
   };
 
-  console.log(totalDays);
+  //console.log(totalDays);
 
   const totalPrice = totalDays * room?.price;
 
@@ -73,7 +73,7 @@ const RoomReservation = ({ room }) => {
     image: room?.image,
   });
 
-  console.log("Initial Booking Info: ", bookingInfo);
+  //console.log("Initial Booking Info: ", bookingInfo);
 
   //updating the bookingInfo upon date selection in the calender
   useEffect(() => {
@@ -97,7 +97,7 @@ const RoomReservation = ({ room }) => {
     }
   }, [bookings]);
 
-  console.log("Room Reservation:", bookedDates);
+  //console.log("Room Reservation:", bookedDates);
 
   return (
     <div className="rounded-xl border-[1px] border-neutral-200 overflow-hidden bg-white">

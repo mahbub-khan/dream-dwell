@@ -19,7 +19,6 @@ const CheckoutForm = ({
   bookingInfo,
   closeModal,
   room,
-  bookedDates,
   setBookedDates,
   latestAvailableDate,
 }) => {
@@ -118,7 +117,6 @@ const CheckoutForm = ({
             latestAvailableDate,
             room
           );
-          console.log(isRoomBooked);
 
           if (isRoomBooked) {
             //Update room status in DB if all dates are not booked
