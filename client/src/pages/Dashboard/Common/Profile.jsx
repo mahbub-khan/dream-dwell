@@ -1,11 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import useRole from "../../../hooks/useRole";
 import { Helmet } from "react-helmet-async";
 import toast from "react-hot-toast";
 
 const Profile = () => {
-  const { user, resetPassword } = useAuth();
+  const { user, resetPassword, logOut } = useAuth();
   const [role] = useRole();
+  const navigate = useNavigate();
   console.log(user);
 
   const handlePasswordChange = async () => {
@@ -18,12 +20,18 @@ const Profile = () => {
 
     resetPassword(email)
       .then(() => {
-        toast.success("Please check you inbox 📩");
+        logOut;
+
+        navigate("/login");
+        toast.success(
+          "Please check your inbox 📩 and login with the new password"
+        );
       })
       .catch((err) => {
         toast.error(err.message);
       });
   };
+
   return (
     <div className="flex justify-center items-center h-screen">
       <Helmet>
@@ -68,6 +76,7 @@ const Profile = () => {
                   Update Profile
                 </button>
                 <button
+                  type="button"
                   onClick={handlePasswordChange}
                   className="bg-[#F43F5E] px-7 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053]"
                 >

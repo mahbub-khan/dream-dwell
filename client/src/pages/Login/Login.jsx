@@ -69,7 +69,7 @@ const Login = () => {
 
     resetPassword(email)
       .then(() => {
-        toast.success("Please check you inbox 📩");
+        toast.success("Please check your inbox 📩");
       })
       .catch((err) => {
         toast.error(err.message);
