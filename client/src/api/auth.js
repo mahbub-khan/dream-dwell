@@ -61,3 +61,23 @@ export const becomeHost = async (email) => {
   const { data } = await axiosSecure.put(`/users/${email}`, currentUser);
   return data;
 };
+
+export const handlePasswordForgotten = async (email) => {
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  if (!email) {
+    toast.error("Please write your email in the email filed");
+    return;
+  } else if (!emailRegex.test(email)) {
+    toast.error("Please write a valid email");
+    return;
+  }
+
+  resetPassword(email)
+    .then(() => {
+      toast.success("Please check you inbox 📩");
+    })
+    .catch((err) => {
+      toast.error(err.message);
+    });
+};

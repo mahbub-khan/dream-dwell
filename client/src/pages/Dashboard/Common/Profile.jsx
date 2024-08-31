@@ -1,11 +1,29 @@
 import useAuth from "../../../hooks/useAuth";
 import useRole from "../../../hooks/useRole";
 import { Helmet } from "react-helmet-async";
+import toast from "react-hot-toast";
 
 const Profile = () => {
-  const { user } = useAuth();
+  const { user, resetPassword } = useAuth();
   const [role] = useRole();
   console.log(user);
+
+  const handlePasswordChange = async () => {
+    const email = user?.email;
+
+    if (!email) {
+      toast.error("No email found");
+      return;
+    }
+
+    resetPassword(email)
+      .then(() => {
+        toast.success("Please check you inbox 📩");
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
   return (
     <div className="flex justify-center items-center h-screen">
       <Helmet>
@@ -49,7 +67,10 @@ const Profile = () => {
                 <button className="bg-[#F43F5E] px-10 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053] block mb-1">
                   Update Profile
                 </button>
-                <button className="bg-[#F43F5E] px-7 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053]">
+                <button
+                  onClick={handlePasswordChange}
+                  className="bg-[#F43F5E] px-7 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053]"
+                >
                   Change Password
                 </button>
               </div>
