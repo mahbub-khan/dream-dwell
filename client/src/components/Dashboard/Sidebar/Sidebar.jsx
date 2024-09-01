@@ -19,9 +19,9 @@ const Sidebar = () => {
   const { logOut } = useAuth();
   const [toggle, setToggle] = useState(false);
   const [isActive, setActive] = useState(false);
-  const [role] = useRole();
-  console.log(toggle);
-  console.log(role);
+  const [, role] = useRole();
+  // console.log(toggle);
+  // console.log(role);
   //   For guest/host menu item toggle button
   const toggleHandler = (event) => {
     setToggle(event.target.checked);

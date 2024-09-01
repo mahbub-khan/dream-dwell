@@ -10,7 +10,7 @@ import { becomeHost } from "../../../api/auth";
 
 const GuestMenu = () => {
   const { user } = useAuth();
-  const [role] = useRole();
+  const [, role] = useRole();
   const [isOpen, setIsOpen] = useState(false);
 
   const closeModal = () => {

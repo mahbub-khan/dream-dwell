@@ -27,16 +27,23 @@ export const clearToken = async () => {
   return data;
 };
 
-//Get user role
+//Get a single user and user role
 export const getRole = async (email) => {
   const { data } = await axiosSecure.get(`/user/${email}`);
 
-  return data.role;
+  return data;
 };
 
 //Get all users
 export const getAllUsers = async () => {
   const { data } = await axiosSecure("/users");
+  return data;
+};
+
+//update profile
+export const updateUserProfile = async (userData, id) => {
+  const { data } = await axiosSecure.put(`/user/${id}`, userData);
+
   return data;
 };
 
@@ -60,24 +67,4 @@ export const becomeHost = async (email) => {
   };
   const { data } = await axiosSecure.put(`/users/${email}`, currentUser);
   return data;
-};
-
-export const handlePasswordForgotten = async (email) => {
-  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-  if (!email) {
-    toast.error("Please write your email in the email filed");
-    return;
-  } else if (!emailRegex.test(email)) {
-    toast.error("Please write a valid email");
-    return;
-  }
-
-  resetPassword(email)
-    .then(() => {
-      toast.success("Please check you inbox 📩");
-    })
-    .catch((err) => {
-      toast.error(err.message);
-    });
 };

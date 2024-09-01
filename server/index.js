@@ -153,6 +153,22 @@ async function run() {
       res.send(result);
     });
 
+    //Update a user
+    app.put("/user/:id", verifyToken, async (req, res) => {
+      const user = req.body;
+      const filter = { _id: new ObjectId(req.params.id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: user,
+      };
+      const result = await roomsCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+      res.send(result);
+    });
+
     //Get all users
     app.get("/users", verifyToken, async (req, res) => {
       const result = await usersCollection.find().toArray();

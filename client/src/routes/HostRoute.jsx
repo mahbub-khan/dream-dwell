@@ -4,7 +4,7 @@ import Loader from "../components/Shared/Loader";
 import useRole from "../hooks/useRole";
 
 const HostRoute = ({ children }) => {
-  const [role, isLoading] = useRole(); //isLoading is for role, not the same as loading in useAuth which is for user
+  const [, role, isLoading] = useRole(); //isLoading is for role, not the same as loading in useAuth which is for user
 
   if (isLoading) return <Loader />;
   if (role === "host") return children;

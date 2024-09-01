@@ -3,12 +3,22 @@ import useAuth from "../../../hooks/useAuth";
 import useRole from "../../../hooks/useRole";
 import { Helmet } from "react-helmet-async";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import UpdateProfileModal from "../../../components/Modal/UpdateProfileModal";
+import Loader from "../../../components/Shared/Loader";
 
 const Profile = () => {
-  const { user, resetPassword, logOut } = useAuth();
-  const [role] = useRole();
+  const { user, resetPassword, updateUserProfile, logOut } = useAuth();
+  const [userProfile, role, isLoading] = useRole();
   const navigate = useNavigate();
-  console.log(user);
+  // console.log(user);
+  // console.log(userProfile);
+
+  let [isOpen, setIsOpen] = useState(false);
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   const handlePasswordChange = async () => {
     const email = user?.email;
@@ -31,6 +41,8 @@ const Profile = () => {
         toast.error(err.message);
       });
   };
+
+  if (isLoading) return <Loader />;
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -56,7 +68,7 @@ const Profile = () => {
             {role && role.toUpperCase()}
           </p>
           <p className="mt-2 text-xl font-medium text-gray-800 ">
-            User Id: {user.uid}
+            User Id: {userProfile?._id}
           </p>
           <div className="w-full p-2 mt-4 rounded-lg">
             <div className="flex flex-wrap items-center justify-between text-sm text-gray-600 ">
@@ -72,7 +84,11 @@ const Profile = () => {
               </p>
 
               <div>
-                <button className="bg-[#F43F5E] px-10 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053] block mb-1">
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(true)}
+                  className="bg-[#F43F5E] px-10 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053] block mb-1"
+                >
                   Update Profile
                 </button>
                 <button
@@ -80,9 +96,15 @@ const Profile = () => {
                   onClick={handlePasswordChange}
                   className="bg-[#F43F5E] px-7 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053]"
                 >
-                  Change Password
+                  Change Password 🔐
                 </button>
               </div>
+              <UpdateProfileModal
+                isOpen={isOpen}
+                closeModal={closeModal}
+                user={user}
+                updateUserProfile={updateUserProfile}
+              />
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@ const MenuDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user, logOut } = useAuth();
-  const [role] = useRole();
+  const [, role] = useRole();
 
   const closeModal = () => {
     setIsModalOpen(false);

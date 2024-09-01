@@ -5,7 +5,7 @@ import GuestStatistics from "../../../components/Dashboard/Statistics/GuestStati
 import HostStatistics from "../../../components/Dashboard/Statistics/HostStatistics";
 
 const Statistics = () => {
-  const [role] = useRole();
+  const [, role] = useRole();
 
   return (
     <div>

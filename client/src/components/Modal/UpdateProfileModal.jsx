@@ -1,24 +1,27 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { imageUpload } from "../../api/utils";
-import UpdateRoomForm from "../Form/UpdateRoomForm";
 import toast from "react-hot-toast";
-import { updateRoom } from "../../api/rooms";
+import UpdateProfileForm from "../Form/UpdateProfileForm";
 
-const UpdateRoomModal = ({ setIsEditModalOpen, isOpen, refetch, room, id }) => {
+const UpdateProfileModal = ({
+  isOpen,
+  user,
+  closeModal,
+  updateUserProfile,
+}) => {
   const [loading, setLoading] = useState(false);
-  const [dates, setDates] = useState({
-    startDate: new Date(room.from),
-    endDate: new Date(room.to),
-    key: "selection",
-  });
-  const [roomData, setRoomData] = useState(room);
+
+  const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
+  const [userName, setUserName] = useState(user.displayName);
+  const [userImage, setUserImage] = useState(user.photoURL);
 
   const handleImageUpdate = (image) => {
-    setLoading(true);
+    setUploadButtonText(image.name);
+    //setLoading(true);
     imageUpload(image)
       .then((res) => {
-        setRoomData({ ...roomData, image: res.data.display_url });
+        setUserImage(res.data.display_url);
         setLoading(false);
       })
       .catch((err) => {
@@ -29,40 +32,23 @@ const UpdateRoomModal = ({ setIsEditModalOpen, isOpen, refetch, room, id }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    //console.log(roomData);
-    const updatedData = Object.assign({}, { ...roomData });
-    delete updatedData._id;
     setLoading(true);
-    updateRoom(updatedData, id)
-      .then((data) => {
-        //console.log(data);
-        toast.success("Home info updated");
-        setLoading(false);
-        refetch();
-        setIsEditModalOpen(false);
+
+    //Updating in the firebase
+    updateUserProfile(userName, userImage)
+      .then(() => {
+        toast.success("Profile updated");
+        closeModal();
       })
       .catch((err) => {
         toast.error(err.message);
-        setLoading(false);
+        closeModal();
       });
-  };
-
-  const handleDates = (ranges) => {
-    setDates(ranges.selection);
-    setRoomData({
-      ...roomData,
-      to: ranges.selection.endDate,
-      from: ranges.selection.startDate,
-    });
   };
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-10"
-        onClose={() => setIsEditModalOpen(false)}
-      >
+      <Dialog as="div" className="relative z-10" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -91,17 +77,16 @@ const UpdateRoomModal = ({ setIsEditModalOpen, isOpen, refetch, room, id }) => {
                   as="h3"
                   className="text-lg font-medium text-center leading-6 text-gray-900"
                 >
-                  Update Room Info
+                  Update Profile
                 </Dialog.Title>
                 <div className="mt-2 w-full">
-                  <UpdateRoomForm
+                  <UpdateProfileForm
                     handleSubmit={handleSubmit}
-                    roomData={roomData}
-                    setRoomData={setRoomData}
                     handleImageUpdate={handleImageUpdate}
                     loading={loading}
-                    dates={dates}
-                    handleDates={handleDates}
+                    userName={userName}
+                    setUserName={setUserName}
+                    uploadButtonText={uploadButtonText}
                   />
                 </div>
                 <hr className="mt-8 " />
@@ -109,7 +94,7 @@ const UpdateRoomModal = ({ setIsEditModalOpen, isOpen, refetch, room, id }) => {
                   <button
                     type="button"
                     className="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
-                    onClick={() => setIsEditModalOpen(false)}
+                    onClick={closeModal}
                   >
                     Cancel
                   </button>
@@ -123,4 +108,4 @@ const UpdateRoomModal = ({ setIsEditModalOpen, isOpen, refetch, room, id }) => {
   );
 };
 
-export default UpdateRoomModal;
+export default UpdateProfileModal;
