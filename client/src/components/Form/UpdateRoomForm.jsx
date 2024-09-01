@@ -19,23 +19,6 @@ const UpdateRoomForm = ({
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-10">
           <div className="space-y-1 text-sm">
-            <label htmlFor="location" className="block text-gray-600">
-              Location
-            </label>
-            <input
-              className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md "
-              name="location"
-              value={roomData?.location}
-              onChange={(event) =>
-                setRoomData({ ...roomData, location: event.target.value })
-              }
-              id="location"
-              type="text"
-              placeholder="Location"
-              required
-            />
-          </div>
-          <div className="space-y-1 text-sm">
             <label htmlFor="title" className="block text-gray-600">
               Title
             </label>
@@ -44,11 +27,28 @@ const UpdateRoomForm = ({
               onChange={(event) =>
                 setRoomData({ ...roomData, title: event.target.value })
               }
-              className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md "
+              className="w-full px-4 py-3 text-gray-800 border border-[#d94e2885] focus:outline-[#d94e28] rounded-md "
               name="title"
               id="title"
               type="text"
               placeholder="Title"
+              required
+            />
+          </div>
+          <div className="space-y-1 text-sm">
+            <label htmlFor="location" className="block text-gray-600">
+              Location
+            </label>
+            <input
+              className="w-full px-4 py-3 text-gray-800 border border-[#d94e2885] focus:outline-[#d94e28] rounded-md "
+              name="location"
+              value={roomData?.location}
+              onChange={(event) =>
+                setRoomData({ ...roomData, location: event.target.value })
+              }
+              id="location"
+              type="text"
+              placeholder="Location"
               required
             />
           </div>
@@ -63,7 +63,7 @@ const UpdateRoomForm = ({
               }
               required
               defaultValue={roomData.category}
-              className="w-full px-4 py-3 border-rose-300 focus:outline-rose-500 rounded-md"
+              className="w-full px-4 py-3 border-[#d94e2885] focus:outline-[#d94e28] rounded-md"
               name="category"
             >
               {categories.map((category) => (
@@ -80,10 +80,11 @@ const UpdateRoomForm = ({
             </label>
             <div className="flex justify-center pt-2">
               <DateRange
-                onChange={handleDates}
                 ranges={[dates]}
-                rangeColors={["#F43F5E"]}
+                onChange={(ranges) => handleDates(ranges)}
+                rangeColors={["#d94e28"]}
                 minDate={new Date()}
+                weekStartsOn={1}
               />
             </div>
           </div>
@@ -103,7 +104,7 @@ const UpdateRoomForm = ({
                     accept="image/*"
                     hidden
                   />
-                  <div className="bg-rose-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-rose-500">
+                  <div className="bg-[#d94e28] text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-[#e94d22]">
                     Upload Image
                   </div>
                 </label>
@@ -120,7 +121,7 @@ const UpdateRoomForm = ({
                 onChange={(event) =>
                   setRoomData({ ...roomData, price: event.target.value })
                 }
-                className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md "
+                className="w-full px-4 py-3 text-gray-800 border border-[#d94e2885] focus:outline-[#d94e28] rounded-md "
                 name="price"
                 id="price"
                 type="number"
@@ -138,7 +139,7 @@ const UpdateRoomForm = ({
                 onChange={(event) =>
                   setRoomData({ ...roomData, guests: event.target.value })
                 }
-                className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md "
+                className="w-full px-4 py-3 text-gray-800 border border-[#d94e2885] focus:outline-[#d94e28] rounded-md "
                 name="total_guest"
                 id="guest"
                 type="number"
@@ -158,7 +159,7 @@ const UpdateRoomForm = ({
                 onChange={(event) =>
                   setRoomData({ ...roomData, bedrooms: event.target.value })
                 }
-                className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md "
+                className="w-full px-4 py-3 text-gray-800 border border-[#d94e2885] focus:outline-[#d94e28] rounded-md "
                 name="bedrooms"
                 id="bedrooms"
                 type="number"
@@ -176,7 +177,7 @@ const UpdateRoomForm = ({
                 onChange={(event) =>
                   setRoomData({ ...roomData, bathrooms: event.target.value })
                 }
-                className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md "
+                className="w-full px-4 py-3 text-gray-800 border border-[#d94e2885] focus:outline-[#d94e28] rounded-md "
                 name="bathrooms"
                 id="bathrooms"
                 type="number"
@@ -197,7 +198,7 @@ const UpdateRoomForm = ({
                 setRoomData({ ...roomData, description: event.target.value })
               }
               id="description"
-              className="block rounded-md focus:rose-300 w-full h-32 px-4 py-3 text-gray-800  border border-rose-300 focus:outline-rose-500 "
+              className="block rounded-md focus:rose-300 w-full h-32 px-4 py-3 text-gray-800  border border-[#d94e2885] focus:outline-[#d94e28] "
               name="description"
             ></textarea>
           </div>
@@ -205,7 +206,7 @@ const UpdateRoomForm = ({
 
         <button
           type="submit"
-          className="w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500"
+          className="w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-[#d94e28]"
         >
           {loading ? (
             <TbFidgetSpinner className="m-auto animate-spin" size={24} />

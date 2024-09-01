@@ -57,6 +57,7 @@ const AddRoomForm = ({
                 rangeColors={["#d94e28"]}
                 onChange={(ranges) => handleDates(ranges)}
                 minDate={new Date()}
+                weekStartsOn={1}
               />
             </div>
           </div>

@@ -64,7 +64,7 @@ const Profile = () => {
             />
           </a>
 
-          <p className="p-2 px-4 text-xs text-white bg-pink-500 rounded-full">
+          <p className="p-2 px-4 text-xs text-white bg-[#d94e28] rounded-full">
             {role && role.toUpperCase()}
           </p>
           <p className="mt-2 text-xl font-medium text-gray-800 ">
@@ -87,14 +87,14 @@ const Profile = () => {
                 <button
                   type="button"
                   onClick={() => setIsOpen(true)}
-                  className="bg-[#F43F5E] px-10 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053] block mb-1"
+                  className="bg-[#d94e28] px-10 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053] block mb-1"
                 >
                   Update Profile
                 </button>
                 <button
                   type="button"
                   onClick={handlePasswordChange}
-                  className="bg-[#F43F5E] px-7 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053]"
+                  className="bg-[#d94e28] px-7 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053]"
                 >
                   Change Password 🔐
                 </button>

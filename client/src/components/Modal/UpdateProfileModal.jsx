@@ -75,11 +75,13 @@ const UpdateProfileModal = ({
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium text-center leading-6 text-gray-900"
+                  className="text-lg font-medium text-center leading-6 text-gray-900 pb-3"
                 >
                   Update Profile
                 </Dialog.Title>
-                <div className="mt-2 w-full">
+
+                <hr />
+                <div className="w-full">
                   <UpdateProfileForm
                     handleSubmit={handleSubmit}
                     handleImageUpdate={handleImageUpdate}
@@ -89,7 +91,7 @@ const UpdateProfileModal = ({
                     uploadButtonText={uploadButtonText}
                   />
                 </div>
-                <hr className="mt-8 " />
+                <hr className="mt-0 " />
                 <div className="mt-2 ">
                   <button
                     type="button"
