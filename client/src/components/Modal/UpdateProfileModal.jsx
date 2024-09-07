@@ -9,10 +9,13 @@ const UpdateProfileModal = ({
   user,
   closeModal,
   updateUserProfile,
+  role,
 }) => {
   const [loading, setLoading] = useState(false);
 
   const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
+
+  //For Profile Info Update
   const [userName, setUserName] = useState(user.displayName);
   const [userImage, setUserImage] = useState(user.photoURL);
 
@@ -34,7 +37,7 @@ const UpdateProfileModal = ({
     event.preventDefault();
     setLoading(true);
 
-    //Updating in the firebase
+    //Updating user profile in the firebase
     updateUserProfile(userName, userImage)
       .then(() => {
         toast.success("Profile updated");

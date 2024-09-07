@@ -40,13 +40,6 @@ export const getAllUsers = async () => {
   return data;
 };
 
-//update profile
-export const updateUserProfile = async (userData, id) => {
-  const { data } = await axiosSecure.put(`/user/${id}`, userData);
-
-  return data;
-};
-
 //update user role in DB
 export const updateUserRole = async ({ email, role }) => {
   const currentUser = {

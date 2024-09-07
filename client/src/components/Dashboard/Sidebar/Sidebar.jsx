@@ -22,14 +22,17 @@ const Sidebar = () => {
   const [, role] = useRole();
   // console.log(toggle);
   // console.log(role);
+
   //   For guest/host menu item toggle button
   const toggleHandler = (event) => {
     setToggle(event.target.checked);
   };
+
   // Sidebar Responsive Handler
   const handleToggle = () => {
     setActive(!isActive);
   };
+
   return (
     <>
       {/* Small Screen Navbar */}

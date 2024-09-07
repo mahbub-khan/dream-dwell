@@ -6,13 +6,24 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import UpdateProfileModal from "../../../components/Modal/UpdateProfileModal";
 import Loader from "../../../components/Shared/Loader";
+import { useQuery } from "@tanstack/react-query";
+import { getHostRooms } from "../../../api/rooms";
 
 const Profile = () => {
   const { user, resetPassword, updateUserProfile, logOut } = useAuth();
   const [userProfile, role, isLoading] = useRole();
   const navigate = useNavigate();
-  // console.log(user);
-  // console.log(userProfile);
+
+  //For Host Info Update in rooms Collection
+  const [hostName, setHostName] = useState();
+  const [hostImage, setHostImage] = useState();
+
+  //For Guest Info Update in bookings Collection
+  const [guestName, setGuestName] = useState();
+  const [guestImage, setGuestImage] = useState();
+
+  //console.log(user);
+  //console.log(role);
 
   let [isOpen, setIsOpen] = useState(false);
 
@@ -20,6 +31,19 @@ const Profile = () => {
     setIsOpen(false);
   }
 
+  //Get all rooms for Host
+
+  const { data: myHostedRooms = [], refetch } = useQuery({
+    queryKey: ["hostedRooms"],
+    queryFn: async () => await getHostRooms(user?.email),
+    enabled: role === "host",
+  });
+
+  myHostedRooms.map((myRoom) => {
+    console.log(myRoom);
+  });
+
+  //Password Change function
   const handlePasswordChange = async () => {
     const email = user?.email;
 
@@ -30,7 +54,7 @@ const Profile = () => {
 
     resetPassword(email)
       .then(() => {
-        logOut;
+        logOut();
 
         navigate("/login");
         toast.success(
@@ -104,6 +128,7 @@ const Profile = () => {
                 closeModal={closeModal}
                 user={user}
                 updateUserProfile={updateUserProfile}
+                role={role}
               />
             </div>
           </div>
