@@ -3,7 +3,7 @@ import { Fragment, useState } from "react";
 import { imageUpload } from "../../api/utils";
 import toast from "react-hot-toast";
 import UpdateProfileForm from "../Form/UpdateProfileForm";
-import { updateHostInfo, updateRoom } from "../../api/rooms";
+import { updateHostInfo } from "../../api/rooms";
 import { updateGuestInfo } from "../../api/bookings";
 
 const UpdateProfileModal = ({
@@ -15,8 +15,8 @@ const UpdateProfileModal = ({
   myHostedRooms,
   myBookedRooms,
 }) => {
-  //console.log(myHostedRooms);
-  //console.log(myBookedRooms);
+  console.log(myHostedRooms);
+  console.log(myBookedRooms);
   const [loading, setLoading] = useState(false);
 
   const [uploadButtonText, setUploadButtonText] = useState("Upload Image");

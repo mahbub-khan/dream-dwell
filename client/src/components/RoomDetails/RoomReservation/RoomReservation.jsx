@@ -23,7 +23,8 @@ const RoomReservation = ({ room }) => {
     setIsOpen(false);
   };
 
-  const latestAvailableDate = findMinDate(room?.from);
+  const latestAvailableDate = findMinDate(room?.from, room?.to);
+  console.log(latestAvailableDate);
 
   //Fetching all the bookings for this room
   const { data: bookings = [], isLoading } = useQuery({
@@ -86,8 +87,14 @@ const RoomReservation = ({ room }) => {
   }, [value, totalDays, totalPrice]);
 
   //setting the bookedDates array
+  const today = new Date(new Date().setHours(23, 59, 0, 0));
+  console.log(new Date(room?.to) < today);
   useEffect(() => {
-    if (bookings.length) {
+    if (new Date(room?.to) < today) {
+      const allBookedDates = generateDateArray(room?.from, room?.to);
+      setBookedDates(allBookedDates);
+      return;
+    } else if (bookings.length) {
       const allBookedDates = bookings.flatMap((booking) =>
         generateDateArray(booking.from, booking.to)
       );
@@ -97,9 +104,10 @@ const RoomReservation = ({ room }) => {
     }
   }, [bookings]);
 
-  //console.log("Room Reservation:", bookedDates);
+  console.log("Room Reservation:", bookedDates);
+  console.log(bookings);
 
-  console.log(new Date(room?.to));
+  //console.log(new Date(room?.to));
 
   return (
     <div className="rounded-xl border-[1px] border-neutral-200 overflow-hidden bg-white">

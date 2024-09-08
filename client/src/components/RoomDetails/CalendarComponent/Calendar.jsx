@@ -20,6 +20,7 @@ const CalendarComponent = ({
       maxDate={new Date(room?.to)}
       direction="vertical"
       showDateDisplay={false}
+      weekStartsOn={1}
       scroll={{ enabled: true }}
       disabledDates={bookedDates}
     />

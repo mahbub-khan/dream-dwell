@@ -17,20 +17,22 @@ export const isAllDatesBooked = (bookedDates, latestAvailableDate, room) => {
 export const isBooked = (user, room, totalPrice) => {
   const today = new Date(new Date().setHours(23, 59, 0, 0));
   const formattedEndDate = new Date(room?.to);
-  console.log(formattedEndDate);
+  //console.log(formattedEndDate);
   if (user?.email === room?.host?.email) return "You are the Host 🏠";
-  if (room?.booked === true) return "Already Booked 🚫";
   if (formattedEndDate < today) return "Not Available Now 🚫";
+  if (room?.booked === true) return "Already Booked 🚫";
   if (totalPrice === 0) return "Select Dates 🗓️";
 
   return "Reserve";
 };
 
 //finding out the latest available date
-export const findMinDate = (startDate) => {
+export const findMinDate = (startDate, endDate) => {
   const today = new Date(new Date().setHours(0, 0, 0, 0)); //setting the hours to midnight(12 AM)
   const formattedStartDate = new Date(startDate);
+  const formattedEndDate = new Date(endDate);
 
+  if (formattedEndDate < today) return formattedStartDate;
   if (formattedStartDate >= today) return formattedStartDate;
 
   return today;
@@ -52,4 +54,11 @@ export const generateDateArray = (startDate, endDate) => {
   }
 
   return tempDateArray;
+};
+
+export const isBookingPeriodEnded = (startDate, endDate) => {
+  const today = new Date(new Date().setHours(23, 59, 0, 0));
+  const formattedEndDate = new Date(endDate);
+
+  return generateDateArray(startDate, endDate);
 };
