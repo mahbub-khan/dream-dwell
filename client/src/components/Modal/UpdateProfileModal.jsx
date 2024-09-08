@@ -3,6 +3,8 @@ import { Fragment, useState } from "react";
 import { imageUpload } from "../../api/utils";
 import toast from "react-hot-toast";
 import UpdateProfileForm from "../Form/UpdateProfileForm";
+import { updateHostInfo, updateRoom } from "../../api/rooms";
+import { updateGuestInfo } from "../../api/bookings";
 
 const UpdateProfileModal = ({
   isOpen,
@@ -10,7 +12,11 @@ const UpdateProfileModal = ({
   closeModal,
   updateUserProfile,
   role,
+  myHostedRooms,
+  myBookedRooms,
 }) => {
+  //console.log(myHostedRooms);
+  //console.log(myBookedRooms);
   const [loading, setLoading] = useState(false);
 
   const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
@@ -40,6 +46,43 @@ const UpdateProfileModal = ({
     //Updating user profile in the firebase
     updateUserProfile(userName, userImage)
       .then(() => {
+        //Updating the host info
+        const updatedHost = {
+          host: {
+            name: userName,
+            image: userImage,
+          },
+        };
+
+        myHostedRooms.map((myRoom) => {
+          updateHostInfo(updatedHost, myRoom._id)
+            .then(() => {
+              console.log("Host info updated");
+            })
+            .catch((err) => {
+              console.error(err.message);
+            });
+        });
+
+        //Updating the guest info
+        const updatedGuest = {
+          guest: {
+            name: userName,
+            image: userImage,
+          },
+        };
+
+        myBookedRooms.map((myRoom) => {
+          updateGuestInfo(updatedGuest, myRoom._id)
+            .then(() => {
+              console.log("Guest info updated");
+            })
+            .catch((err) => {
+              console.error(err.message);
+            });
+        });
+
+        //Profile Update message
         toast.success("Profile updated");
         closeModal();
       })

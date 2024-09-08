@@ -37,3 +37,10 @@ export const updateRoom = async (roomData, id) => {
 
   return data;
 };
+
+//update host info for a room when host profile is updated
+export const updateHostInfo = async (roomData, id) => {
+  const { data } = await axiosSecure.put(`/my-hosted-rooms/${id}`, roomData);
+
+  return data;
+};

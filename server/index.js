@@ -222,6 +222,25 @@ async function run() {
       res.send(result);
     });
 
+    //Update host info in DB when profile is updated
+    app.put("/my-hosted-rooms/:id", verifyToken, async (req, res) => {
+      const hostInfo = req.body.host;
+      const filter = { _id: new ObjectId(req.params.id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          "host.name": hostInfo.name,
+          "host.image": hostInfo.image,
+        },
+      };
+      const result = await roomsCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+      res.send(result);
+    });
+
     //Delete a room from DB - for host
     app.delete("/rooms/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
@@ -240,6 +259,25 @@ async function run() {
 
       const query = { "guest.email": email };
       const result = await bookingCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    //Update guest info in DB when profile is updated
+    app.put("/booking/:id", verifyToken, async (req, res) => {
+      const guestInfo = req.body.guest;
+      const filter = { _id: new ObjectId(req.params.id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          "guest.name": guestInfo.name,
+          "guest.image": guestInfo.image,
+        },
+      };
+      const result = await bookingCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
       res.send(result);
     });
 

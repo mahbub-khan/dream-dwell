@@ -8,15 +8,12 @@ import UpdateProfileModal from "../../../components/Modal/UpdateProfileModal";
 import Loader from "../../../components/Shared/Loader";
 import { useQuery } from "@tanstack/react-query";
 import { getHostRooms } from "../../../api/rooms";
+import { getBookings } from "../../../api/bookings";
 
 const Profile = () => {
   const { user, resetPassword, updateUserProfile, logOut } = useAuth();
   const [userProfile, role, isLoading] = useRole();
   const navigate = useNavigate();
-
-  //For Host Info Update in rooms Collection
-  const [hostName, setHostName] = useState();
-  const [hostImage, setHostImage] = useState();
 
   //For Guest Info Update in bookings Collection
   const [guestName, setGuestName] = useState();
@@ -31,16 +28,18 @@ const Profile = () => {
     setIsOpen(false);
   }
 
-  //Get all rooms for Host
-
-  const { data: myHostedRooms = [], refetch } = useQuery({
+  //Get all rooms for Host to update the listed rooms Host info
+  const { data: myHostedRooms = [] } = useQuery({
     queryKey: ["hostedRooms"],
     queryFn: async () => await getHostRooms(user?.email),
     enabled: role === "host",
   });
 
-  myHostedRooms.map((myRoom) => {
-    console.log(myRoom);
+  //Get all booked rooms for Gues to update the booked rooms guest info
+  const { data: myBookedRooms = [] } = useQuery({
+    queryKey: ["bookedRooms"],
+    queryFn: async () => await getBookings(user?.email),
+    enabled: role === "host" || role === "guest",
   });
 
   //Password Change function
@@ -129,6 +128,8 @@ const Profile = () => {
                 user={user}
                 updateUserProfile={updateUserProfile}
                 role={role}
+                myHostedRooms={myHostedRooms}
+                myBookedRooms={myBookedRooms}
               />
             </div>
           </div>

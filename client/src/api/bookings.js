@@ -27,6 +27,13 @@ export const getBookings = async (email) => {
   return data;
 };
 
+//update guest info when profile is updated
+export const updateGuestInfo = async (guestData, id) => {
+  const { data } = await axiosSecure.put(`/booking/${id}`, guestData);
+
+  return data;
+};
+
 //get all host bookings by email
 export const getHostBookings = async (email) => {
   const { data } = await axiosSecure(`/bookings/host/?email=${email}`);
