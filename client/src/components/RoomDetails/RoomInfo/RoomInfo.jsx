@@ -38,15 +38,15 @@ const RoomInfo = ({ room }) => {
         >
           <div className="flex items-center">
             <FaPersonHalfDress size={15} className="mr-[3px] text-[#464646]" />
-            {room?.guests} guests
+            {room?.guests} {room?.guests > 1 ? "guests" : "guest"}
           </div>
           <div className="flex items-center">
             <FaHouse size={14} className="mr-[3px] text-[#464646]" />
-            {room?.bedrooms} rooms
+            {room?.bedrooms} {room?.bedrooms > 1 ? "bedrooms" : "bedroom"}
           </div>
           <div className="flex items-center">
             <FaBath size={14} className="mr-[3px] text-[#464646]" />
-            {room?.bathrooms} bathrooms
+            {room?.bathrooms} {room?.bathrooms > 1 ? "bathrooms" : "bathroom"}
           </div>
         </div>
       </div>
