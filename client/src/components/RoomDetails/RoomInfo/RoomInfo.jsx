@@ -1,3 +1,5 @@
+import { FaPersonHalfDress, FaHouse, FaBath } from "react-icons/fa6";
+
 /* eslint-disable react/prop-types */
 const RoomInfo = ({ room }) => {
   return (
@@ -13,12 +15,13 @@ const RoomInfo = ({ room }) => {
                 gap-2
               "
         >
-          <div>Hosted by {room?.host?.name}</div>
+          <div>
+            Hosted by:{" "}
+            <span className="text-[#d94e28]">{room?.host?.name}</span>
+          </div>
 
           <img
-            className="rounded-full"
-            height="30"
-            width="30"
+            className="rounded-full border-[1px] border-[#d94e28] h-[30px] w-[30px] object-cover"
             alt="Avatar"
             src={room?.host?.image}
           />
@@ -33,9 +36,18 @@ const RoomInfo = ({ room }) => {
                 text-neutral-500
               "
         >
-          <div>{room?.guests} guests</div>
-          <div>{room?.bedrooms} rooms</div>
-          <div>{room?.bathrooms} bathrooms</div>
+          <div className="flex items-center">
+            <FaPersonHalfDress size={15} className="mr-[3px] text-[#464646]" />
+            {room?.guests} guests
+          </div>
+          <div className="flex items-center">
+            <FaHouse size={14} className="mr-[3px] text-[#464646]" />
+            {room?.bedrooms} rooms
+          </div>
+          <div className="flex items-center">
+            <FaBath size={14} className="mr-[3px] text-[#464646]" />
+            {room?.bathrooms} bathrooms
+          </div>
         </div>
       </div>
 

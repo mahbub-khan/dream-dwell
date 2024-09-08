@@ -15,8 +15,12 @@ export const isAllDatesBooked = (bookedDates, latestAvailableDate, room) => {
 
 //Seeting the Book/reserve button text
 export const isBooked = (user, room, totalPrice) => {
+  const today = new Date(new Date().setHours(23, 59, 0, 0));
+  const formattedEndDate = new Date(room?.to);
+  console.log(formattedEndDate);
   if (user?.email === room?.host?.email) return "You are the Host 🏠";
   if (room?.booked === true) return "Already Booked 🚫";
+  if (formattedEndDate < today) return "Not Available Now 🚫";
   if (totalPrice === 0) return "Select Dates 🗓️";
 
   return "Reserve";
