@@ -88,7 +88,7 @@ const RoomReservation = ({ room }) => {
 
   //setting the bookedDates array
   const today = new Date(new Date().setHours(23, 59, 0, 0));
-  console.log(new Date(room?.to) < today);
+  console.log(new Date(room?.to));
   useEffect(() => {
     if (new Date(room?.to) < today) {
       const allBookedDates = generateDateArray(room?.from, room?.to);

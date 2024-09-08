@@ -48,7 +48,16 @@ const UpdateRoomModal = ({ setIsEditModalOpen, isOpen, refetch, room, id }) => {
   };
 
   const handleDates = (ranges) => {
-    setDates(ranges.selection);
+    const { startDate, endDate, key } = ranges.selection;
+    const modifiedEndDate = new Date(endDate.setHours(23, 59, 59, 999));
+    console.log(ranges);
+    setDates({
+      startDate,
+      endDate: modifiedEndDate,
+      key,
+    });
+
+    //setDates(ranges.selection);
     setRoomData({
       ...roomData,
       to: ranges.selection.endDate,
