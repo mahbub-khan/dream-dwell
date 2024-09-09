@@ -12,9 +12,14 @@ import {
 import { FaSkiing } from "react-icons/fa";
 import { BsSnow } from "react-icons/bs";
 import { IoDiamond } from "react-icons/io5";
-import { MdOutlineVilla } from "react-icons/md";
+import { MdOutlineVilla, MdApartment } from "react-icons/md";
 
 export const categories = [
+  {
+    label: "Dormitory",
+    icon: MdApartment,
+    description: "This property belongs to a dorm!",
+  },
   {
     label: "Beach",
     icon: TbBeach,
@@ -23,7 +28,7 @@ export const categories = [
   {
     label: "Windmills",
     icon: GiWindmill,
-    description: "This property is has windmills!",
+    description: "This property has windmills!",
   },
   {
     label: "Modern",

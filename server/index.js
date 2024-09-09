@@ -281,6 +281,27 @@ async function run() {
       res.send(result);
     });
 
+    //Update image and title info in DB when host updates room
+    app.put("/booking-update/:id", verifyToken, async (req, res) => {
+      const { title, image } = req.body;
+      //console.log(info);
+      //console.log(typeof req.params.id);
+      const filter = { roomId: req.params.id };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          title: title,
+          image: image,
+        },
+      };
+      const result = await bookingCollection.updateMany(
+        filter,
+        updateDoc,
+        options
+      );
+      res.send(result);
+    });
+
     //Get all bookings for host
     app.get("/bookings/host", verifyToken, async (req, res) => {
       const email = req.query.email;

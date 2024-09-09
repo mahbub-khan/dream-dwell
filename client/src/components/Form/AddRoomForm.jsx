@@ -19,7 +19,7 @@ const AddRoomForm = ({
                 Location
               </label>
               <input
-                className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md "
+                className="w-full px-4 py-3 text-gray-800 border border-[#d94e28] focus:outline-[#d94e28] rounded-md "
                 name="location"
                 id="location"
                 type="text"
@@ -34,7 +34,7 @@ const AddRoomForm = ({
               </label>
               <select
                 required
-                className="w-full px-4 py-3 border-rose-300 focus:outline-rose-500 rounded-md"
+                className="w-full px-4 py-3 border-[#d94e28] focus:outline-[#d94e28] rounded-md"
                 name="category"
               >
                 <option value="" selected disabled hidden>
@@ -67,7 +67,7 @@ const AddRoomForm = ({
                 Title
               </label>
               <input
-                className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md "
+                className="w-full px-4 py-3 text-gray-800 border border-[#d94e28] focus:outline-[#d94e28] rounded-md "
                 name="title"
                 id="title"
                 type="text"
@@ -102,7 +102,7 @@ const AddRoomForm = ({
                   Price per night
                 </label>
                 <input
-                  className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md "
+                  className="w-full px-4 py-3 text-gray-800 border border-[#d94e28] focus:outline-[#d94e28] rounded-md "
                   name="price"
                   id="price"
                   type="number"
@@ -116,7 +116,7 @@ const AddRoomForm = ({
                   Total guest
                 </label>
                 <input
-                  className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md "
+                  className="w-full px-4 py-3 text-gray-800 border border-[#d94e28] focus:outline-[#d94e28] rounded-md "
                   name="total_guest"
                   id="guest"
                   type="number"
@@ -132,7 +132,7 @@ const AddRoomForm = ({
                   Bedrooms
                 </label>
                 <input
-                  className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md "
+                  className="w-full px-4 py-3 text-gray-800 border border-[#d94e28] focus:outline-[#d94e28] rounded-md "
                   name="bedrooms"
                   id="bedrooms"
                   type="number"
@@ -146,7 +146,7 @@ const AddRoomForm = ({
                   Bathrooms
                 </label>
                 <input
-                  className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md "
+                  className="w-full px-4 py-3 text-gray-800 border border-[#d94e28] focus:outline-[#d94e28] rounded-md "
                   name="bathrooms"
                   id="bathrooms"
                   type="number"
@@ -163,7 +163,7 @@ const AddRoomForm = ({
 
               <textarea
                 id="description"
-                className="block rounded-md focus:rose-300 w-full h-32 px-4 py-3 text-gray-800  border border-rose-300 focus:outline-rose-500 "
+                className="block rounded-md focus:[#d94e28] w-full h-32 px-4 py-3 text-gray-800  border border-[#d94e28] focus:outline-[#d94e28] "
                 name="description"
               ></textarea>
             </div>

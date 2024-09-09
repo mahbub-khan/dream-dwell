@@ -35,7 +35,7 @@ const Profile = () => {
     enabled: role === "host",
   });
 
-  //Get all booked rooms for Gues to update the booked rooms guest info
+  //Get all booked rooms for Guest to update the booked rooms guest info
   const { data: myBookedRooms = [] } = useQuery({
     queryKey: ["bookedRooms"],
     queryFn: async () => await getBookings(user?.email),

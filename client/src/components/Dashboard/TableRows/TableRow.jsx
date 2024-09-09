@@ -3,8 +3,10 @@ import { useState } from "react";
 import { cancelBooking, updateStatus } from "../../../api/bookings";
 import CancelModal from "../../Modal/CancelModal";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const TableRow = ({ booking, refetch }) => {
+  const navigate = useNavigate();
   let [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
   const closeCancelModal = () => {
@@ -24,9 +26,16 @@ const TableRow = ({ booking, refetch }) => {
       closeCancelModal();
     }
   };
+
+  const handleRowClick = () => {
+    navigate(`/room/${booking.roomId}`);
+  };
   return (
     <tr>
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+      <td
+        onClick={handleRowClick}
+        className="px-5 py-5 border-b border-gray-200 bg-white text-sm hover:cursor-pointer hover:underline"
+      >
         <div className="flex items-center">
           <div className="flex-shrink-0">
             <div className="block relative">
@@ -38,7 +47,9 @@ const TableRow = ({ booking, refetch }) => {
             </div>
           </div>
           <div className="ml-3">
-            <p className="text-gray-900 whitespace-no-wrap">{booking?.title}</p>
+            <p className="text-[#3b82f5] whitespace-no-wrap ">
+              {booking?.title}
+            </p>
           </div>
         </div>
       </td>

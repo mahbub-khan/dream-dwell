@@ -4,6 +4,7 @@ import { imageUpload } from "../../api/utils";
 import UpdateRoomForm from "../Form/UpdateRoomForm";
 import toast from "react-hot-toast";
 import { updateRoom } from "../../api/rooms";
+import { updateTitleImage } from "../../api/bookings";
 
 const UpdateRoomModal = ({ setIsEditModalOpen, isOpen, refetch, room, id }) => {
   const [loading, setLoading] = useState(false);
@@ -35,6 +36,20 @@ const UpdateRoomModal = ({ setIsEditModalOpen, isOpen, refetch, room, id }) => {
     setLoading(true);
     updateRoom(updatedData, id)
       .then((data) => {
+        //Update info in the booking collection
+        const updatedBookingInfo = {
+          title: updatedData.title,
+          image: updatedData.image,
+        };
+
+        updateTitleImage(updatedBookingInfo, id)
+          .then(() => {
+            console.log("Booking info updated");
+          })
+          .catch((err) => {
+            console.error(err.message);
+          });
+
         //console.log(data);
         toast.success("Home info updated");
         setLoading(false);

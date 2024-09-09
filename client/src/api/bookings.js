@@ -34,6 +34,13 @@ export const updateGuestInfo = async (guestData, id) => {
   return data;
 };
 
+//update title and image when host changes info of his room
+export const updateTitleImage = async (updatedData, id) => {
+  const { data } = await axiosSecure.put(`/booking-update/${id}`, updatedData);
+
+  return data;
+};
+
 //get all host bookings by email
 export const getHostBookings = async (email) => {
   const { data } = await axiosSecure(`/bookings/host/?email=${email}`);
