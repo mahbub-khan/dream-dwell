@@ -7,7 +7,8 @@ import { ImSpinner9 } from "react-icons/im";
 import { useRef } from "react";
 
 const Login = () => {
-  const { signIn, signInWithGoogle, loading, resetPassword } = useAuth();
+  const { signIn, signInWithGoogle, loading, resetPassword, user, logOut } =
+    useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location?.state?.from?.pathname || "/";
@@ -23,12 +24,17 @@ const Login = () => {
     try {
       //1. User registration
       const result = await signIn(email, password);
+      //console.log(result?.user?.email);
 
       //2. Get Token
-      await getToken(result?.user?.email);
+      const userToken = await getToken(result?.user?.email);
 
-      toast.success("Login successful");
-      navigate(from, { replace: true });
+      if (userToken.success) {
+        toast.success("Login successful");
+        navigate(from, { replace: true });
+      } else {
+        logOut();
+      }
     } catch (err) {
       console.log(err);
       toast.error(err?.message);
@@ -75,6 +81,8 @@ const Login = () => {
         toast.error(err.message);
       });
   };
+
+  console.log(user);
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">

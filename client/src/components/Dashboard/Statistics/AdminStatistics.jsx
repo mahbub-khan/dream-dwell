@@ -12,6 +12,8 @@ const AdminStatistics = () => {
     queryFn: async () => await getAdminStat(),
   });
 
+  console.log(statData);
+
   if (isLoading) return <Loader />;
 
   return (

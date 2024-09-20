@@ -22,7 +22,7 @@ const GuestStatistics = () => {
     <div>
       <div className="mt-12">
         {/* small cards */}
-        <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="mb-12 grid gap-y-4 md:gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {/* Spent Card */}
           <div className="flex items-center bg-clip-border rounded-xl justify-between bg-white text-gray-700 shadow-xl border-2 ">
             <div

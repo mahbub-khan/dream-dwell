@@ -14,10 +14,11 @@ export const isAllDatesBooked = (bookedDates, latestAvailableDate, room) => {
 };
 
 //Seeting the Book/reserve button text
-export const isBooked = (user, room, totalPrice) => {
+export const isBooked = (role, user, room, totalPrice) => {
   const today = new Date(new Date().setHours(23, 59, 0, 0));
   const formattedEndDate = new Date(room?.to);
   //console.log(formattedEndDate);
+  if (role === "admin") return "Admin can't book 🚫";
   if (user?.email === room?.host?.email) return "You are the Host 🏠";
   if (formattedEndDate < today) return "Not Available Now 🚫";
   if (room?.booked === true) return "Already Booked 🚫";

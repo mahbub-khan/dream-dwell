@@ -11,8 +11,10 @@ import {
 } from "../Utilities/RoomReservationUtilies";
 import { useQuery } from "@tanstack/react-query";
 import { getBookingsForARoom } from "../../../api/bookings";
+import useRole from "../../../hooks/useRole";
 
 const RoomReservation = ({ room }) => {
+  const [, role] = useRole();
   let [isOpen, setIsOpen] = useState(false);
   const { user, loading } = useAuth();
   //console.log(user.email);
@@ -130,11 +132,12 @@ const RoomReservation = ({ room }) => {
       <div className="p-4">
         <Button
           onClick={() => setIsOpen(true)}
-          label={isBooked(user, room, totalPrice)}
+          label={isBooked(role, user, room, totalPrice)}
           disabled={
             room?.host?.email === user?.email ||
             totalPrice === 0 ||
-            room?.booked
+            room?.booked ||
+            role === "admin"
           }
         />
       </div>

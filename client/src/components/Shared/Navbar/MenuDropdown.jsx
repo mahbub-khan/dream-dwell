@@ -37,7 +37,7 @@ const MenuDropdown = () => {
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
         {/* Become A Host btn */}
-        <div className="hidden md:block">
+        {/* <div className="hidden md:block">
           {(!user || !role || role === "guest") && (
             <button
               onClick={() => setIsModalOpen(true)}
@@ -47,7 +47,7 @@ const MenuDropdown = () => {
               Host your home
             </button>
           )}
-        </div>
+        </div> */}
         {/* Dropdown btn */}
         <div
           onClick={() => setIsOpen(!isOpen)}

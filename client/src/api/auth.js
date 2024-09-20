@@ -1,4 +1,4 @@
-import axiosSecure from ".";
+import axiosSecure from "./index";
 
 //save user data in database
 export const saveUser = async (user) => {

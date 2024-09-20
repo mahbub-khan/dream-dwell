@@ -11,7 +11,7 @@ const stripe = require("stripe")(process.env.STRIPE_SK);
 
 // middleware
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://localhost:5174"],
+  origin: ["https://dream-dwell.surge.sh", "http://localhost:5173"],
   credentials: true,
   optionSuccessStatus: 200,
 };
@@ -19,23 +19,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
-
-const verifyToken = async (req, res, next) => {
-  const token = req.cookies?.token;
-
-  if (!token) {
-    return res.status(401).send({ message: "unauthorized access" });
-  }
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-    if (err) {
-      console.log(err);
-      return res.status(401).send({ message: "unauthorized access" });
-    }
-    req.user = decoded;
-
-    next();
-  });
-};
 
 const client = new MongoClient(process.env.DB_URI, {
   serverApi: {
@@ -52,6 +35,25 @@ async function run() {
     const roomsCollection = client.db("stay-vista").collection("rooms");
 
     const bookingCollection = client.db("stay-vista").collection("bookings");
+
+    const verifyToken = async (req, res, next) => {
+      const token = req.cookies?.token;
+      console.log("Token from Verify Token: ", token);
+
+      if (!token) {
+        return res.status(401).send({ message: "unauthorized access" });
+      }
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+          console.log(err);
+          return res.status(401).send({ message: "unauthorized access" });
+        }
+        req.user = decoded;
+        console.log("Decoded user from VerifyToken:", req.user);
+
+        next();
+      });
+    };
 
     //Role Verification Middlewares
     //For Admin
@@ -89,8 +91,9 @@ async function run() {
       res
         .cookie("token", token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+          secure: true,
+          sameSite: "none",
+          maxAge: 365 * 24 * 60 * 60 * 1000,
         })
         .send({ success: true });
     });
@@ -100,9 +103,10 @@ async function run() {
       try {
         res
           .clearCookie("token", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
             maxAge: 0,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
           })
           .send({ success: true });
         console.log("Logout successful");
@@ -147,7 +151,7 @@ async function run() {
     });
 
     //Get user role
-    app.get("/user/:email", verifyToken, async (req, res) => {
+    app.get("/user/:email", async (req, res) => {
       const email = req.params.email;
       const result = await usersCollection.findOne({ email });
       res.send(result);
@@ -491,10 +495,10 @@ async function run() {
     });
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
+    // await client.db("admin").command({ ping: 1 });
+    // console.log(
+    //   "Pinged your deployment. You successfully connected to MongoDB!"
+    // );
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();

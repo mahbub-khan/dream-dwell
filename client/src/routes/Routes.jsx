@@ -18,6 +18,7 @@ import MyBookings from "../pages/Dashboard/Guest/MyBookings";
 import ManageBookings from "../pages/Dashboard/Host/ManageBookings";
 import Statistics from "../pages/Dashboard/Common/Statistics";
 import NonAdminRoute from "./NonAdminRoute";
+import LogInSignUpRoute from "./LogInSignUpRoute";
 
 export const router = createBrowserRouter([
   {
@@ -26,22 +27,39 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
+        index: true,
         element: <Home />,
       },
       {
-        path: "/room/:id",
+        path: "room/:id",
         element: (
           <PrivateRoute>
             <RoomDetails />
           </PrivateRoute>
         ),
-        loader: ({ params }) => getSingleRoom(params.id),
+        loader: ({ params }) => {
+          //console.log(params.id);
+          return getSingleRoom(params.id);
+        },
       },
     ],
   },
-  { path: "/login", element: <Login /> },
-  { path: "/signup", element: <SignUp /> },
+  {
+    path: "/login",
+    element: (
+      <LogInSignUpRoute>
+        <Login />
+      </LogInSignUpRoute>
+    ),
+  },
+  {
+    path: "/signup",
+    element: (
+      <LogInSignUpRoute>
+        <SignUp />
+      </LogInSignUpRoute>
+    ),
+  },
   {
     path: "/dashboard",
     element: (
