@@ -7,6 +7,7 @@ import { formatDistanceToNow } from "date-fns";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "../../Shared/Loader";
 import { getHostStat } from "../../../api/utils";
+
 const HostStatistics = () => {
   const { data: statData = [], isLoading } = useQuery({
     queryKey: ["hostStatData"],
