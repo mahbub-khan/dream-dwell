@@ -2,7 +2,7 @@
 
 ## Live Link: [DreamDwell](https://dream-dwell.surge.sh/)
 
-HomeStay is a full-featured, responsive booking platform built with React JS and Mongo DB, designed to seamlessly connect guests with hosts for renting rooms, apartments, or entire houses.
+DreamDwell is a full-featured, responsive booking platform built with React JS, Express JS and MongoDB, designed to seamlessly connect guests with hosts for renting rooms, apartments, or entire houses.
 
 This web application allows users to book available properties, manage their bookings, and even become a host themselves. With robust admin controls, hosts can be approved or rejected, and all user actions are efficiently managed.
 
