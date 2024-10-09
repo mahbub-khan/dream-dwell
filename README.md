@@ -1,6 +1,9 @@
 # DreamDwell Project Details:
 
-## Live Link: [DreamDwell](https://dream-dwell.surge.sh/)
+## Live Links:
+
+- [DreamDwell - netlify](https://dream-dwell.netlify.app/)
+- [DreamDwell - surge](https://dream-dwell.surge.sh/)
 
 DreamDwell is a full-featured, responsive booking platform built with React JS, Express JS and MongoDB, designed to seamlessly connect guests with hosts for renting rooms, apartments, or entire houses.
 

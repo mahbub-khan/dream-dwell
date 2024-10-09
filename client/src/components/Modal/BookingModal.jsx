@@ -3,7 +3,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { format } from "date-fns";
 import { Fragment } from "react";
 import { Elements } from "@stripe/react-stripe-js";
-import CheckoutForm from "../Form/CheckOutForm.jsx";
+import CheckoutForm from "../Form/CheckoutForm.jsx";
+
 const stripePromise = loadStripe(import.meta.env.VITE_Stripe_PK);
 
 const BookingModal = ({

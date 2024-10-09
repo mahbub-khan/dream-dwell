@@ -12,7 +12,7 @@ const stripe = require("stripe")(process.env.STRIPE_SK);
 // middleware
 const corsOptions = {
   origin: [
-    "https://dream-dwell-steel.vercel.app",
+    "https://dream-dwell.netlify.app",
     "https://dream-dwell.surge.sh",
     "http://localhost:5173",
   ],
